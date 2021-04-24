@@ -1,0 +1,20 @@
+@import '../../partials/variables';
+
+.container {
+  width: 100%;
+  padding: 1.2rem;
+  border: none;
+  border-radius: $border-radius;
+
+  color: $color-white;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  background-color: $color-bright-blue;
+  transition: background-color $transition-duration;
+
+  &:hover:not(&:active) {
+    background-color: $color-bright-blue-on-hover;
+  }
+}
