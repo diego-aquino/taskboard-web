@@ -1,11 +1,13 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import * as yup from 'yup';
 
+import api from '~/api';
 import { AbstractSquares, PersonWithPosters } from '~/assets';
-import { Button, Input } from '~/components/common';
+import { Alert, Button, Input } from '~/components/common';
 import styles from '~/styles/pages/SignUpPage.module.scss';
+import * as errors from '~/utils/errors';
 import * as validate from '~/utils/validation';
 
 const { ValidationError } = yup;
@@ -18,6 +20,8 @@ const SignUpPage = () => {
     password: useRef(null),
     confirmPassword: useRef(null),
   };
+  const [emailCustomAlertMessage, setEmailCustomAlertMessage] = useState(null);
+  const [globalAlertMessage, setGlobalAlertMessage] = useState(null);
 
   const validatePassword = useCallback(async (password) => {
     await validate.requiredPasswordField(password, 8);
@@ -36,6 +40,19 @@ const SignUpPage = () => {
     },
     [inputRefs.password],
   );
+
+  const handleSignUpError = useCallback((error) => {
+    const errorType = errors.getNetworkErrorType(error.response);
+    const message = errors.generateNetworkErrorMessage(errorType);
+
+    switch (errorType) {
+      case errors.types.EMAIL_ALREADY_IN_USE: {
+        return setEmailCustomAlertMessage(message);
+      }
+      default:
+        return setGlobalAlertMessage(message);
+    }
+  }, []);
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -57,7 +74,16 @@ const SignUpPage = () => {
       inputRefs.password,
     ].map((ref) => ref.current?.value);
 
-    console.log({ firstName, lastName, email, password }); // temporary
+    try {
+      await api.post('/accounts/signup', {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+    } catch (error) {
+      handleSignUpError(error);
+    }
   };
 
   const preventSubmitByPressingEnter = useCallback((event) => {
@@ -112,6 +138,7 @@ const SignUpPage = () => {
             label="Email"
             placeholder="nome@dominio.com"
             validate={validate.requiredEmailField}
+            customAlertMessage={emailCustomAlertMessage}
             required
           />
           <div className={styles.twoColumnInputContainer}>
@@ -136,6 +163,14 @@ const SignUpPage = () => {
               required
             />
           </div>
+
+          {globalAlertMessage && (
+            <Alert
+              className={styles.globalAlertContainer}
+              message={globalAlertMessage}
+            />
+          )}
+
           <Button type="submit">Registrar</Button>
         </form>
 
