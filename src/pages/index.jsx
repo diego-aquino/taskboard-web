@@ -1,3 +1,12 @@
-const Home = () => <div>Taskboard</div>;
+import Head from 'next/head';
 
-export default Home;
+const HomePage = () => (
+  <div>
+    <Head>
+      <title>Taskboard</title>
+    </Head>
+    Home
+  </div>
+);
+
+export default HomePage;
