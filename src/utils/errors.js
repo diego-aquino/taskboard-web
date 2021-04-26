@@ -1,10 +1,12 @@
 export const types = {
   EMAIL_ALREADY_IN_USE: 'EMAIL_ALREADY_IN_USE',
+  ACCESS_TOKEN_EXPIRED: 'ACCESS_TOKEN_EXPIRED',
   UNKNOWN_ERROR: 'UNKNOWN_ERROR',
 };
 
 const errorMessageToErrorType = {
   'Email is already in use.': types.EMAIL_ALREADY_IN_USE,
+  'Expired access token.': types.ACCESS_TOKEN_EXPIRED,
 };
 
 export function getNetworkErrorType(errorResponse) {
