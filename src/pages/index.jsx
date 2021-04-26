@@ -1,12 +1,14 @@
-import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-const HomePage = () => (
-  <div>
-    <Head>
-      <title>Taskboard</title>
-    </Head>
-    Home
-  </div>
-);
+const HomePage = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace('/dashboard');
+  }, [router]);
+
+  return <></>;
+};
 
 export default HomePage;
