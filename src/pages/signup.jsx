@@ -1,19 +1,40 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useCallback, useRef } from 'react';
 
 import api from '~/api';
 import { AbstractSquares, PersonWithPosters } from '~/assets';
 import { SignUpForm } from '~/components/homePage';
+import { useAccount } from '~/contexts/AccountContext';
+import { useAuth } from '~/contexts/AuthContext';
 import styles from '~/styles/pages/SignUpPage.module.scss';
 import * as errors from '~/utils/errors';
+import { localStorageKeys, saveToLocalStorage } from '~/utils/local';
 
 const SignUpPage = () => {
+  const { setAccountData } = useAccount();
+  const { setTokens } = useAuth();
+
+  const router = useRouter();
+
   const signUpFormRef = useRef(null);
 
-  const registerAccount = useCallback(async (accountInfo) => {
-    await api.post('/accounts/signup', accountInfo);
-  }, []);
+  const registerAccount = useCallback(
+    async (accountData) => {
+      const signUpResponse = await api.post('/accounts/signup', accountData);
+      const { account, accessToken, refreshToken } = signUpResponse.data;
+
+      setAccountData(account);
+      setTokens({ accessToken, refreshToken });
+
+      const stringifiedAccount = JSON.stringify(account);
+      saveToLocalStorage(localStorageKeys.ACCOUNT_DATA, stringifiedAccount);
+      saveToLocalStorage(localStorageKeys.ACCESS_TOKEN, accessToken);
+      saveToLocalStorage(localStorageKeys.REFRESH_TOKEN, refreshToken);
+    },
+    [setAccountData, setTokens],
+  );
 
   const handleSignUpError = useCallback((error) => {
     const errorType = errors.getNetworkErrorType(error.response);
@@ -34,11 +55,12 @@ const SignUpPage = () => {
     async ({ firstName, lastName, email, password }) => {
       try {
         await registerAccount({ firstName, lastName, email, password });
+        router.push('/dashboard');
       } catch (error) {
         handleSignUpError(error);
       }
     },
-    [registerAccount, handleSignUpError],
+    [registerAccount, handleSignUpError, router],
   );
 
   return (
