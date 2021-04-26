@@ -3,12 +3,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCallback, useRef } from 'react';
 
-import api from '~/api';
 import { AbstractSquares, PersonWithPosters } from '~/assets';
 import { SignUpForm } from '~/components/homePage';
 import { useAccount } from '~/contexts/AccountContext';
 import { useAuth } from '~/contexts/AuthContext';
 import styles from '~/styles/pages/SignUpPage.module.scss';
+import * as accounts from '~/utils/accounts';
 import * as errors from '~/utils/errors';
 import { localStorageKeys, saveToLocalStorage } from '~/utils/local';
 
@@ -20,17 +20,16 @@ const SignUpPage = () => {
 
   const signUpFormRef = useRef(null);
 
-  const registerAccount = useCallback(
+  const signUpAccount = useCallback(
     async (accountData) => {
-      const signUpResponse = await api.post('/accounts/signup', accountData);
-      const { account, accessToken, refreshToken } = signUpResponse.data;
+      const responseData = await accounts.signup(accountData);
+      const { account, accessToken, refreshToken } = responseData;
 
       setAccountData(account);
       setTokens({ accessToken, refreshToken });
 
       const stringifiedAccount = JSON.stringify(account);
       saveToLocalStorage(localStorageKeys.ACCOUNT_DATA, stringifiedAccount);
-      saveToLocalStorage(localStorageKeys.ACCESS_TOKEN, accessToken);
       saveToLocalStorage(localStorageKeys.REFRESH_TOKEN, refreshToken);
     },
     [setAccountData, setTokens],
@@ -54,13 +53,13 @@ const SignUpPage = () => {
   const handleValidFormSubmit = useCallback(
     async ({ firstName, lastName, email, password }) => {
       try {
-        await registerAccount({ firstName, lastName, email, password });
+        await signUpAccount({ firstName, lastName, email, password });
         router.push('/dashboard');
       } catch (error) {
         handleSignUpError(error);
       }
     },
-    [registerAccount, handleSignUpError, router],
+    [signUpAccount, handleSignUpError, router],
   );
 
   return (
