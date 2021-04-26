@@ -1,36 +1,16 @@
 import clsx from 'clsx';
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useState,
-} from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 
 import styles from '~/styles/components/common/Input.module.scss';
 
 import Alert from './Alert';
 
 const Input = (
-  {
-    label,
-    name,
-    validate,
-    customAlertMessage,
-    className,
-    onChange,
-    onBlur,
-    ...rest
-  },
+  { label, name, validate, className, onChange, onBlur, ...rest },
   ref,
 ) => {
   const [value, setValue] = useState('');
   const [alertMessage, setAlertMessage] = useState(null);
-
-  useEffect(() => {
-    if (!customAlertMessage) return;
-    setAlertMessage(customAlertMessage);
-  }, [customAlertMessage]);
 
   const executeValidation = useCallback(
     async (valueToValidate) => {
@@ -54,6 +34,8 @@ const Input = (
       value,
       isValid: !alertMessage,
       validate: () => executeValidation(value),
+      setCustomAlertMessage: (customAlertMessage) =>
+        setAlertMessage(customAlertMessage),
     }),
     [value, alertMessage, executeValidation],
   );
