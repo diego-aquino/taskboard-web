@@ -6,15 +6,31 @@
   flex-direction: column;
   justify-content: center;
 
-  &:focus-within {
+  &.withAlert {
     label {
-      color: $color-bright-blue-on-hover;
+      color: $color-light-red;
+      margin-right: 1.6rem;
     }
+
+    input {
+      color: $color-light-red;
+
+      &:focus {
+        color: $color-dark-blue;
+      }
+
+      &:not(&:focus) {
+        border-color: $color-light-red;
+      }
+    }
+  }
+
+  &:focus-within label {
+    color: $color-bright-blue-on-hover;
   }
 
   label {
     margin-bottom: 0.6rem;
-
     color: $color-light-blue;
     font-weight: 500;
 
@@ -32,14 +48,31 @@
     transition: border-color $transition-duration,
       box-shadow $transition-duration;
 
+    &:focus {
+      border-color: $color-bright-blue;
+      box-shadow: 0px 0px 0px 1px $color-bright-blue;
+    }
+
     &::placeholder {
       color: $color-light-blue;
       opacity: 0.6;
     }
+  }
 
-    &:focus {
-      border-color: $color-bright-blue;
-      box-shadow: 0px 0px 0px 1px $color-bright-blue;
+  .alertContainer {
+    margin-top: 0.6rem;
+    display: flex;
+    align-items: center;
+
+    color: $color-light-red;
+    font-weight: 500;
+    font-size: 1.4rem;
+
+    svg {
+      min-width: 1.4rem;
+      min-height: 1.4rem;
+      margin-right: 0.6rem;
+      margin-bottom: 0.05rem;
     }
   }
 }
