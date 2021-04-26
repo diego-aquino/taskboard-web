@@ -1,9 +1,8 @@
 import Head from 'next/head';
 
+import { AbstractSquares, PersonWithSmartphone } from '~/assets';
 import { Input, Button } from '~/components/common';
 import styles from '~/styles/pages/LoginPage.module.scss';
-
-import { AbstractSquares, PersonWithSmartphone } from '../assets';
 
 const Login = () => (
   <div className={styles.container}>
