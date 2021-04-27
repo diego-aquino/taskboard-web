@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import {
   InfoIcon,
@@ -11,13 +11,20 @@ import {
 } from '~/assets';
 import { SwitchButton } from '~/components/common';
 import { Task } from '~/components/dashboardPage';
+import { useAccount } from '~/contexts/AccountContext';
 import { useAuth } from '~/contexts/AuthContext';
 import styles from '~/styles/pages/DashboardPage.module.scss';
 
 const DashboardPage = () => {
   const router = useRouter();
 
+  const { accountData } = useAccount();
   const { isAuthenticated, isLoading: isLoadingAuth } = useAuth();
+
+  const userFullName = useMemo(() => {
+    if (!accountData) return '';
+    return `${accountData.firstName} ${accountData.lastName}`;
+  }, [accountData]);
 
   useEffect(() => {
     const shouldRedirect = !isLoadingAuth && !isAuthenticated;
@@ -45,7 +52,7 @@ const DashboardPage = () => {
           <div className={styles.userImageContainer}>
             <div className={styles.userImage} />
           </div>
-          <h1>Vinicius Lins</h1>
+          <h1>{userFullName}</h1>
         </div>
         <div className={styles.sidebarMenu}>
           <button type="button">
