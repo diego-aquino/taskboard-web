@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 import { InfoIcon, LogoutIcon, UserProfile, PlusIcon } from '~/assets';
-import { ItemMenu } from '~/components/common';
 import { useAccount } from '~/contexts/AccountContext';
 import { useAuth } from '~/contexts/AuthContext';
 import styles from '~/styles/pages/DashboardPage.module.scss';
@@ -62,26 +61,22 @@ const DashboardPage = () => {
           <div className={styles.photo}>
             <div className={styles.img} />
           </div>
-          <strong>Vinícius</strong>
-          <strong>Lins</strong>
+          <h1>Vinícius</h1>
+          <h1>Lins</h1>
         </div>
         <div className={styles.menu}>
-          <ItemMenu>
-            {' '}
-            <PlusIcon /> Nova Tarefa{' '}
-          </ItemMenu>
-          <ItemMenu>
-            {' '}
-            <UserProfile /> Perfil{' '}
-          </ItemMenu>
-          <ItemMenu>
-            {' '}
-            <InfoIcon /> Sobre{' '}
-          </ItemMenu>
-          <ItemMenu>
-            {' '}
-            <LogoutIcon /> Logout{' '}
-          </ItemMenu>
+          <button type="button">
+            <PlusIcon /> Nova Tarefa
+          </button>
+          <button type="button">
+            <UserProfile /> Perfil
+          </button>
+          <button type="button">
+            <InfoIcon /> Sobre
+          </button>
+          <button type="button">
+            <LogoutIcon /> Logout
+          </button>
         </div>
       </section>
     </div>

@@ -58,7 +58,7 @@
       }
     }
 
-    strong {
+    h1 {
       margin: 0rem 12.3rem 0rem 5.6rem;
       font-weight: 700;
       color: $color-white;
@@ -71,4 +71,25 @@
 .menu {
   width: 100%;
   padding: 4rem 0rem 0rem 5.6rem;
+
+  button {
+    display: flex;
+    flex-direction: row;
+
+    margin-bottom: 2.55rem;
+    gap: 1.1rem;
+
+    border: 0;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: $color-white;
+
+    cursor: pointer;
+
+    background-color: transparent;
+
+    &:hover:not(&:active) {
+      color: $color-white-on-hover;
+    }
+  }
 }
