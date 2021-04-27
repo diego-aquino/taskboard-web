@@ -86,15 +86,16 @@
     span {
       color: $color-light-blue;
       text-align: center;
+    }
 
-      a {
-        color: $color-bright-blue;
-        text-decoration: none;
-        font-weight: 500;
+    a {
+      color: $color-bright-blue;
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 0.3rem;
 
-        &:hover {
-          text-decoration: underline;
-        }
+      &:hover {
+        text-decoration: underline;
       }
     }
   }

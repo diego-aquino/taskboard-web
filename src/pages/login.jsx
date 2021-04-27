@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 
 import { AbstractSquares, PersonWithSmartphone } from '~/assets';
 import { Input, Button } from '~/components/common';
@@ -31,9 +32,8 @@ const Login = () => (
         />
         <Button type="submit">Login</Button>
         <div className={styles.center}>
-          <span>
-            Não tem uma conta? <a href="">Registre-se</a>
-          </span>
+          <span>Não tem uma conta?</span>
+          <Link href="/signup">Registre-se</Link>
         </div>
       </form>
     </section>
