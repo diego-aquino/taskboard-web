@@ -15,7 +15,6 @@ import { useAccount } from '~/contexts/AccountContext';
 import { useAuth } from '~/contexts/AuthContext';
 import styles from '~/styles/pages/DashboardPage.module.scss';
 import * as accounts from '~/utils/accounts';
-import { localStorageKeys, saveToLocalStorage } from '~/utils/local';
 
 const DashboardPage = () => {
   const { accountData, setAccountData } = useAccount();
@@ -42,7 +41,6 @@ const DashboardPage = () => {
         { applyAccessToken: setAccessToken },
       );
       setAccountData(requestedAccountData);
-      saveToLocalStorage(localStorageKeys.ACCOUNT_DATA, requestedAccountData);
     };
 
     requestAndUpdateAccountData();
@@ -73,7 +71,7 @@ const DashboardPage = () => {
           <div className={styles.userImageContainer}>
             <div className={styles.userImage} />
           </div>
-          <h1>Vinícius Lins</h1>
+          <h1>Vinicius Lins</h1>
         </div>
         <div className={styles.sidebarMenu}>
           <button type="button">

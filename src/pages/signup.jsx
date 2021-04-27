@@ -28,8 +28,6 @@ const SignUpPage = () => {
       setAccountData(account);
       setTokens({ accessToken, refreshToken });
 
-      const stringifiedAccount = JSON.stringify(account);
-      saveToLocalStorage(localStorageKeys.ACCOUNT_DATA, stringifiedAccount);
       saveToLocalStorage(localStorageKeys.REFRESH_TOKEN, refreshToken);
     },
     [setAccountData, setTokens],
