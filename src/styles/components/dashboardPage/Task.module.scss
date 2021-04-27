@@ -1,0 +1,84 @@
+@import '../../partials/variables';
+
+.container {
+  padding: 1.2rem;
+  border: 1px solid rgba($color-light-blue, 0.4);
+  border-radius: $border-radius;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: $color-white;
+
+  cursor: default;
+  transition: box-shadow $transition-duration;
+
+  &:hover {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  &.checked span {
+    text-decoration: line-through;
+    opacity: 0.7;
+  }
+
+  button {
+    border: none;
+    background-color: transparent;
+
+    font-size: 0;
+
+    cursor: pointer;
+
+    .checkMark {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 1.1rem;
+
+      border-width: 2px;
+      border-style: solid;
+      transition: border-color $transition-duration-fast;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &.highPriority {
+        border-color: $color-yellow;
+      }
+
+      &.lowPriority {
+        border-color: $color-bright-blue;
+      }
+
+      &.checked {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+
+        background-color: $color-green;
+        transition: background-color $transition-duration-fast;
+
+        &:hover {
+          background-color: rgba($color-green, 0.8);
+        }
+      }
+    }
+
+    svg {
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
+
+  span {
+    margin-left: 1.2rem;
+    flex: 1;
+
+    color: $color-dark-blue;
+
+    transition: opacity $transition-duration;
+  }
+}

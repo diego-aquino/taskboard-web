@@ -1,5 +1,6 @@
 import AbstractSquares from './abstract-squares.svg';
 import AlertIcon from './alert.svg';
+import CheckMarkIcon from './check-mark.svg';
 import InfoIcon from './info.svg';
 import LoadingIcon from './loading.svg';
 import LogoutIcon from './logout.svg';
@@ -18,4 +19,5 @@ export {
   UserProfile,
   PlusIcon,
   LoadingIcon,
+  CheckMarkIcon,
 };
