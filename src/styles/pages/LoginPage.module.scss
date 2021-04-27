@@ -71,35 +71,6 @@
     margin-bottom: 4.8rem;
   }
 
-  form {
-    display: grid;
-    row-gap: 1.8rem;
-
-    input {
-      margin-bottom: 0.8rem;
-    }
-
-    button {
-      margin-bottom: 0.8rem;
-    }
-
-    span {
-      color: $color-light-blue;
-      text-align: center;
-    }
-
-    a {
-      color: $color-bright-blue;
-      text-decoration: none;
-      font-weight: 500;
-      margin-left: 0.3rem;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-
   @media (max-width: 1280px) {
     padding-right: 5.4rem;
     padding-left: 5.4rem;
@@ -123,7 +94,25 @@
 }
 
 .center {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    color: $color-light-blue;
+  }
+
+  a {
+    color: $color-bright-blue;
+    text-decoration: none;
+    font-weight: 500;
+
+    margin-left: 0.3rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .decorativeSection {

@@ -1,0 +1,22 @@
+@import '../../partials/variables';
+
+.container {
+  display: grid;
+  row-gap: 1.8rem;
+
+  input {
+    margin-bottom: 0.8rem;
+  }
+
+  button {
+    margin-bottom: 0.8rem;
+  }
+}
+
+.globalAlertContainer {
+  margin-top: 0.8rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
