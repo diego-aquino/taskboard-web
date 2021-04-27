@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { Input, Button, Alert } from '~/components/common';
 import styles from '~/styles/components/homePage/LoginForm.module.scss';
@@ -48,4 +48,4 @@ const LoginForm = () => {
   );
 };
 
-export default forwardRef(LoginForm);
+export default LoginForm;
