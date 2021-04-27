@@ -11,7 +11,13 @@
 }
 
 body {
+  overflow-x: hidden;
+
   background-color: $color-dark-blue;
+
+  @media (max-width: 300px) {
+    overflow-x: auto;
+  }
 }
 
 #__next {
