@@ -93,3 +93,29 @@
     }
   }
 }
+
+.loadingContainer {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 3.2rem;
+    height: 3.2rem;
+    color: $color-light-blue;
+
+    animation: rotate 0.75s infinite linear;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

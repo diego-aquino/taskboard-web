@@ -2,7 +2,13 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { InfoIcon, LogoutIcon, UserProfile, PlusIcon } from '~/assets';
+import {
+  InfoIcon,
+  LogoutIcon,
+  UserProfile,
+  PlusIcon,
+  LoadingIcon,
+} from '~/assets';
 import { useAccount } from '~/contexts/AccountContext';
 import { useAuth } from '~/contexts/AuthContext';
 import styles from '~/styles/pages/DashboardPage.module.scss';
@@ -47,7 +53,11 @@ const DashboardPage = () => {
   ]);
 
   if (!tokens.accessToken) {
-    return <div>Loading...</div>; // temporary
+    return (
+      <div className={styles.loadingContainer}>
+        <LoadingIcon />
+      </div>
+    );
   }
 
   return (
