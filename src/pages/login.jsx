@@ -1,49 +1,40 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRef } from 'react';
 
 import { AbstractSquares, PersonWithSmartphone } from '~/assets';
-import { Input, Button } from '~/components/common';
+import { LoginForm } from '~/components/homePage';
 import styles from '~/styles/pages/LoginPage.module.scss';
 
-const Login = () => (
-  <div className={styles.container}>
-    <Head>
-      <title>Login | Taskboard</title>
-    </Head>
+const LoginPage = () => {
+  const loginFormRef = useRef(null);
 
-    <section className={styles.loginSection}>
-      <h1>Login</h1>
-      <p>Seja bem vindo de volta!</p>
-      <form>
-        <Input
-          name="email"
-          label="Email"
-          type="email"
-          placeholder="nome@dominio.com"
-          required
-        />
-        <Input
-          name="password"
-          label="Senha"
-          type="password"
-          placeholder="********"
-          minLength={8}
-          required
-        />
-        <Button type="submit">Login</Button>
+  return (
+    <div className={styles.container}>
+      <Head>
+        <title>Login | Taskboard</title>
+      </Head>
+
+      <section className={styles.loginSection}>
+        <h1>Login</h1>
+        <p>Seja bem vindo de volta!</p>
+
+        <LoginForm ref={loginFormRef} />
+
         <div className={styles.center}>
           <span>Não tem uma conta?</span>
           <Link href="/signup">Registre-se</Link>
         </div>
-      </form>
-    </section>
-    <section className={styles.decorativeSection}>
-      <AbstractSquares className={styles.decorativeAbstractSquares} />
-      <AbstractSquares className={styles.decorativeAbstractSquares} />
-      <AbstractSquares className={styles.decorativeAbstractSquares} />
-      <PersonWithSmartphone className={styles.PersonWithSmartphone} />
-    </section>
-  </div>
-);
+      </section>
 
-export default Login;
+      <section className={styles.decorativeSection}>
+        <AbstractSquares className={styles.decorativeAbstractSquares} />
+        <AbstractSquares className={styles.decorativeAbstractSquares} />
+        <AbstractSquares className={styles.decorativeAbstractSquares} />
+        <PersonWithSmartphone className={styles.PersonWithSmartphone} />
+      </section>
+    </div>
+  );
+};
+
+export default LoginPage;
