@@ -4,93 +4,187 @@
   width: 100vw;
   min-width: 300px;
   max-width: 1366px;
-  margin: 0 auto;
   min-height: 100vh;
+  margin: 0 auto;
   padding: 2.8rem;
 
   display: grid;
-  grid-template-columns: 34% 66%;
+  grid-template-columns: 3fr 10fr;
   align-items: center;
   justify-content: center;
 
-  &::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    background-color: $color-dark-blue;
-
-    z-index: -9999;
+  aside,
+  main {
+    height: calc(100vh - 5.6rem);
+    max-height: 712px;
   }
 }
 
-.sidebarSection {
-  height: 100%;
-  width: 31rem;
+.container aside {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 4.8rem 4.8rem 4.8rem 2rem;
 
   .userInfo {
     width: 100%;
-    height: 25.3rem;
-    display: flex;
-    flex-direction: column;
+    margin-bottom: 4.2rem;
 
-    .photo {
-      margin: 5rem 13.5rem 3.9rem 9.5rem;
-      width: 8rem;
-      height: 8rem;
+    .userImageContainer {
+      margin-bottom: 2.2rem;
+      width: 6rem;
+      height: 6rem;
       border-radius: 50%;
       border: 0.3rem solid $color-light-blue;
+
       display: flex;
       justify-content: center;
       align-items: center;
 
-      .img {
+      .userImage {
+        width: 4.8rem;
+        height: 4.8rem;
         border-radius: 50%;
-        width: 6.6rem;
-        height: 6.6rem;
-        background: $color-light-blue;
+
+        background-color: $color-light-blue;
       }
     }
 
     h1 {
-      margin: 0rem 12.3rem 0rem 5.6rem;
-      font-weight: 700;
       color: $color-white;
-      font-size: 3.6rem;
-      white-space: pre-line;
+      font-size: 3.2rem;
+      font-weight: 700;
+    }
+  }
+
+  .sidebarMenu {
+    width: 100%;
+
+    button {
+      display: flex;
+      align-items: center;
+
+      border: 0;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: $color-white;
+
+      cursor: pointer;
+
+      background-color: transparent;
+      transition: background-color $transition-duration;
+
+      &:hover:not(&:active) {
+        color: $color-white-on-hover;
+
+        svg {
+          opacity: 0.7;
+        }
+      }
+
+      svg {
+        margin-right: 1.2rem;
+        width: 1.8rem;
+        height: 1.8rem;
+        transition: opacity $transition-duration;
+      }
+    }
+
+    button + button {
+      margin-top: 2.2rem;
     }
   }
 }
 
-.menu {
-  width: 100%;
-  padding: 4rem 0rem 0rem 5.6rem;
+.container main {
+  padding: 4.8rem;
+  border-radius: 0 3.2rem 3.2rem 0;
 
-  button {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: max-content 1fr;
+  row-gap: 4.2rem;
+
+  background-color: $color-white;
+
+  .topContents {
     display: flex;
-    flex-direction: row;
+    align-items: center;
+  }
 
-    margin-bottom: 2.55rem;
-    gap: 1.1rem;
+  .titleAndDescription {
+    h1 {
+      margin-bottom: 1.6rem;
 
-    border: 0;
-    font-size: 1.8rem;
-    font-weight: 400;
-    color: $color-white;
-
-    cursor: pointer;
-
-    background-color: transparent;
-
-    &:hover:not(&:active) {
-      color: $color-white-on-hover;
+      color: $color-dark-blue;
+      font-size: 3.6rem;
     }
+
+    p {
+      color: $color-light-blue;
+      font-size: 1.6rem;
+    }
+  }
+
+  .preferences {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+
+    .sortingCriteria {
+      display: flex;
+      align-items: center;
+
+      span {
+        margin-right: 0.8rem;
+
+        color: $color-light-blue;
+        font-size: 1.4rem;
+      }
+    }
+
+    .sortingOrder {
+      margin-top: 1.2rem;
+
+      select {
+        min-width: 12.5rem;
+
+        padding: 0.7rem 0 0.7rem 0.7rem;
+        border: none;
+        border-radius: $border-radius;
+
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: $color-dark-blue;
+
+        cursor: pointer;
+
+        box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+        background-color: $color-very-light-blue;
+
+        transition: filter $transition-duration, color $transition-duration;
+
+        &:hover {
+          filter: brightness(0.95);
+        }
+      }
+    }
+  }
+
+  .taskList {
+    padding-right: 0.8rem;
+    margin-right: -0.8rem;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: max-content;
+    column-gap: 2.4rem;
+    row-gap: 1.6rem;
+
+    overflow-y: auto;
   }
 }
 
