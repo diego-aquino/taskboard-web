@@ -1,6 +1,5 @@
 export const localStorageKeys = {
   ACCOUNT_DATA: 'taskboard:account:data',
-  ACCESS_TOKEN: 'taskboard:auth:accessToken',
   REFRESH_TOKEN: 'taskboard:auth:refreshToken',
 };
 
@@ -14,6 +13,6 @@ export function saveToLocalStorage(key, value) {
 }
 
 export function readFromLocalStorage(key) {
-  if (!localStorageIsAvailable) return;
-  window.localStorage.getItem(key);
+  if (!localStorageIsAvailable) return null;
+  return window.localStorage.getItem(key);
 }
