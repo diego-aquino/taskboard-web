@@ -1,0 +1,34 @@
+@import '../../partials/variables';
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 1.8rem;
+
+  button {
+    margin-top: 0.8rem;
+  }
+}
+
+.twoColumnInputContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: flex-start;
+  gap: 1.8rem;
+
+  input {
+    width: 100%;
+  }
+
+  @media (max-width: 430px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.globalAlertContainer {
+  margin-top: 0.8rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

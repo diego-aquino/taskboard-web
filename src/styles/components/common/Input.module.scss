@@ -61,18 +61,5 @@
 
   .alertContainer {
     margin-top: 0.6rem;
-    display: flex;
-    align-items: center;
-
-    color: $color-light-red;
-    font-weight: 500;
-    font-size: 1.4rem;
-
-    svg {
-      min-width: 1.4rem;
-      min-height: 1.4rem;
-      margin-right: 0.6rem;
-      margin-bottom: 0.05rem;
-    }
   }
 }

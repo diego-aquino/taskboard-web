@@ -1,11 +1,12 @@
 import clsx from 'clsx';
 import { forwardRef, useCallback, useImperativeHandle, useState } from 'react';
 
-import { AlertIcon } from '~/assets';
 import styles from '~/styles/components/common/Input.module.scss';
 
+import Alert from './Alert';
+
 const Input = (
-  { label, name, validate, className, onBlur, onChange, ...rest },
+  { label, name, validate, className, onChange, onBlur, ...rest },
   ref,
 ) => {
   const [value, setValue] = useState('');
@@ -33,6 +34,8 @@ const Input = (
       value,
       isValid: !alertMessage,
       validate: () => executeValidation(value),
+      setCustomAlertMessage: (customAlertMessage) =>
+        setAlertMessage(customAlertMessage),
     }),
     [value, alertMessage, executeValidation],
   );
@@ -72,10 +75,7 @@ const Input = (
       />
 
       {alertMessage && (
-        <span className={styles.alertContainer}>
-          <AlertIcon />
-          {alertMessage}
-        </span>
+        <Alert className={styles.alertContainer} message={alertMessage} />
       )}
     </div>
   );
