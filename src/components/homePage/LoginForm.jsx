@@ -1,29 +1,14 @@
-import {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { forwardRef, useCallback, useRef, useState } from 'react';
 
 import { Input, Button, Alert } from '~/components/common';
 import styles from '~/styles/components/homePage/LoginForm.module.scss';
 import * as validate from '~/utils/validation';
 
-const LoginForm = ({ onValidSubmit }, ref) => {
+const LoginForm = () => {
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
 
   const [globalAlertMessage, setGlobalAlertMessage] = useState(null);
-
-  const setCustomAlertMessage = useCallback(
-    ({ global: globalMessage, email: emailMessage }) => {
-      if (globalMessage !== undefined) setGlobalAlertMessage(globalMessage);
-      if (emailMessage !== undefined)
-        emailInputRef.current?.setCustomAlertMessage(emailMessage);
-    },
-    [],
-  );
 
   const validatePassword = useCallback(async (password) => {
     await validate.requiredPasswordField(password, 8);
