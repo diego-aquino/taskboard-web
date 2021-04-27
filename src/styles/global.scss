@@ -1,3 +1,5 @@
+@import './partials/variables';
+
 * {
   margin: 0;
   padding: 0;
@@ -6,6 +8,16 @@
 
 :root {
   font-size: 62.5%;
+}
+
+body {
+  overflow-x: hidden;
+
+  background-color: $color-dark-blue;
+
+  @media (max-width: 300px) {
+    overflow-x: auto;
+  }
 }
 
 #__next {
