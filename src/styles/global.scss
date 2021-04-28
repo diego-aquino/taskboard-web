@@ -32,3 +32,26 @@ button {
   font-family: Roboto, sans-serif;
   font-size: 1.6rem;
 }
+
+select {
+  min-width: 12.5rem;
+
+  padding: 0.7rem 0 0.7rem 0.7rem;
+  border: none;
+  border-radius: $border-radius;
+
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: $color-dark-blue;
+
+  cursor: pointer;
+
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.2);
+  background-color: $color-very-light-blue;
+
+  transition: filter $transition-duration, color $transition-duration;
+
+  &:hover {
+    filter: brightness(0.95);
+  }
+}
