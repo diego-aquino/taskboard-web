@@ -45,6 +45,7 @@ const Input = (
       validate: () => executeValidation(value),
       setCustomAlertMessage: (customAlertMessage) =>
         setAlertMessage(customAlertMessage),
+      clear: () => setValue(''),
     }),
     [value, alertMessage, executeValidation],
   );
