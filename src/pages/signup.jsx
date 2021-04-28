@@ -7,42 +7,40 @@ import { AbstractSquares, PersonWithPosters } from '~/assets';
 import { SignUpForm } from '~/components/homePage';
 import { useAccount } from '~/contexts/AccountContext';
 import { useAuth } from '~/contexts/AuthContext';
+import * as accountsServices from '~/services/accounts';
 import styles from '~/styles/pages/SignUpPage.module.scss';
-import * as accounts from '~/utils/accounts';
-import * as errors from '~/utils/errors';
 import { localStorageKeys, saveToLocalStorage } from '~/utils/local';
+import * as network from '~/utils/network';
 
 const SignUpPage = () => {
+  const router = useRouter();
+
   const { setAccountData } = useAccount();
   const { setTokens } = useAuth();
-
-  const router = useRouter();
 
   const signUpFormRef = useRef(null);
 
   const signUpAccount = useCallback(
     async (accountData) => {
-      const responseData = await accounts.signup(accountData);
+      const responseData = await accountsServices.signUp(accountData);
       const { account, accessToken, refreshToken } = responseData;
 
       setAccountData(account);
       setTokens({ accessToken, refreshToken });
 
-      const stringifiedAccount = JSON.stringify(account);
-      saveToLocalStorage(localStorageKeys.ACCOUNT_DATA, stringifiedAccount);
       saveToLocalStorage(localStorageKeys.REFRESH_TOKEN, refreshToken);
     },
     [setAccountData, setTokens],
   );
 
   const handleSignUpError = useCallback((error) => {
-    const errorType = errors.getNetworkErrorType(error.response);
-    const message = errors.generateNetworkErrorMessage(errorType);
+    const errorType = network.getErrorType(error.response);
+    const message = network.generateFeedbackMessage(errorType);
 
     const { setCustomAlertMessage } = signUpFormRef.current || {};
 
     switch (errorType) {
-      case errors.types.EMAIL_ALREADY_IN_USE: {
+      case network.errorTypes.EMAIL_ALREADY_IN_USE: {
         return setCustomAlertMessage?.({ email: message });
       }
       default:

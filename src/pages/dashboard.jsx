@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import {
   InfoIcon,
@@ -14,47 +14,26 @@ import { Task } from '~/components/dashboardPage';
 import { useAccount } from '~/contexts/AccountContext';
 import { useAuth } from '~/contexts/AuthContext';
 import styles from '~/styles/pages/DashboardPage.module.scss';
-import * as accounts from '~/utils/accounts';
-import { localStorageKeys, saveToLocalStorage } from '~/utils/local';
 
 const DashboardPage = () => {
-  const { accountData, setAccountData } = useAccount();
-  const { tokens, authenticateUser, setAccessToken } = useAuth();
-
   const router = useRouter();
 
+  const { accountData } = useAccount();
+  const { isAuthenticated, isLoading: isLoadingAuth } = useAuth();
+
+  const userFullName = useMemo(() => {
+    if (!accountData) return '';
+    return `${accountData.firstName} ${accountData.lastName}`;
+  }, [accountData]);
+
   useEffect(() => {
-    const redirectIfUserIsNotAuthenticated = async () => {
-      const isAuthenticated = await authenticateUser();
-      if (!isAuthenticated) router.replace('/login');
-    };
+    const shouldRedirect = !isLoadingAuth && !isAuthenticated;
+    if (shouldRedirect) {
+      router.replace('/login');
+    }
+  }, [isLoadingAuth, isAuthenticated, router]);
 
-    redirectIfUserIsNotAuthenticated();
-  }, [router, authenticateUser]);
-
-  useEffect(() => {
-    if (accountData || !tokens.accessToken) return;
-
-    const requestAndUpdateAccountData = async () => {
-      const requestedAccountData = await accounts.details(
-        tokens.accessToken,
-        tokens.refreshToken,
-        { applyAccessToken: setAccessToken },
-      );
-      setAccountData(requestedAccountData);
-      saveToLocalStorage(localStorageKeys.ACCOUNT_DATA, requestedAccountData);
-    };
-
-    requestAndUpdateAccountData();
-  }, [
-    accountData,
-    setAccountData,
-    tokens.accessToken,
-    tokens.refreshToken,
-    setAccessToken,
-  ]);
-
-  if (!tokens.accessToken) {
+  if (!isAuthenticated) {
     return (
       <div className={styles.loadingContainer}>
         <LoadingIcon />
@@ -73,7 +52,7 @@ const DashboardPage = () => {
           <div className={styles.userImageContainer}>
             <div className={styles.userImage} />
           </div>
-          <h1>Vinícius Lins</h1>
+          <h1>{userFullName}</h1>
         </div>
         <div className={styles.sidebarMenu}>
           <button type="button">
