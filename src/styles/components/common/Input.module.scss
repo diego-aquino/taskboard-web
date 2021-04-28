@@ -11,18 +11,6 @@
       color: $color-light-red;
       margin-right: 1.6rem;
     }
-
-    input {
-      color: $color-light-red;
-
-      &:focus {
-        color: $color-dark-blue;
-      }
-
-      &:not(&:focus) {
-        border-color: $color-light-red;
-      }
-    }
   }
 
   &:focus-within label {
@@ -38,24 +26,45 @@
   }
 
   input {
-    padding: 1rem;
-    border: 1px solid toOpacity($color-light-blue, 0.5);
-    border-radius: $border-radius;
     outline: none;
 
     color: $color-dark-blue;
 
     transition: border-color $transition-duration,
-      box-shadow $transition-duration;
-
-    &:focus {
-      border-color: $color-bright-blue;
-      box-shadow: 0px 0px 0px 1px $color-bright-blue;
-    }
+      box-shadow $transition-duration, border-color $transition-duration;
 
     &::placeholder {
       color: $color-light-blue;
       opacity: 0.6;
+    }
+  }
+
+  &.normal {
+    input {
+      padding: 1rem;
+      border-radius: $border-radius;
+      border: 1px solid toOpacity($color-light-blue, 0.5);
+
+      &:focus {
+        border-color: $color-bright-blue;
+        box-shadow: 0px 0px 0px 1px $color-bright-blue;
+      }
+    }
+  }
+
+  &.outline {
+    input {
+      padding: 1rem 0;
+      border: none;
+      border-bottom: 2px solid $color-very-light-blue;
+
+      position: relative;
+
+      background-color: transparent;
+
+      &:focus {
+        border-bottom-color: rgba($color-bright-blue, 0.8);
+      }
     }
   }
 
