@@ -7,6 +7,13 @@ export async function signUp(accountData) {
   return signUpData;
 }
 
+export async function login(accountData) {
+  const loginResponse = await api.post('/accounts/login', accountData);
+  const loginData = loginResponse.data;
+
+  return loginData;
+}
+
 export async function token(refreshToken) {
   const tokenResponse = await api.post('/accounts/token', { refreshToken });
   const { accessToken } = tokenResponse.data;
