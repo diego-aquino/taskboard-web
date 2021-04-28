@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 
@@ -40,9 +41,12 @@ export const AuthContextProvider = ({ children }) => {
     }));
   }, []);
 
-  const authenticateUser = useCallback(async () => {
-    if (isAuthenticated) return;
+  const isRequestingAuthentication = useRef(false);
 
+  const authenticateUser = useCallback(async () => {
+    if (isAuthenticated || isRequestingAuthentication.current) return;
+
+    isRequestingAuthentication.current = true;
     setIsLoading(true);
 
     const refreshToken =
@@ -51,18 +55,18 @@ export const AuthContextProvider = ({ children }) => {
 
     if (!refreshToken) {
       setIsLoading(false);
+      isRequestingAuthentication.current = false;
     }
 
-    let accessToken;
     try {
-      accessToken = await accountsServices.token(refreshToken);
-    } catch {
-      setIsLoading(false);
-    }
+      const accessToken = await accountsServices.token(refreshToken);
 
-    setTokens({ accessToken, refreshToken });
-    saveToLocalStorage(localStorageKeys.REFRESH_TOKEN, refreshToken);
-    setIsLoading(false);
+      setTokens({ accessToken, refreshToken });
+      saveToLocalStorage(localStorageKeys.REFRESH_TOKEN, refreshToken);
+    } finally {
+      setIsLoading(false);
+      isRequestingAuthentication.current = false;
+    }
   }, [tokens.refreshToken, isAuthenticated]);
 
   const requestAndApplyNewAccessToken = useCallback(
@@ -92,6 +96,10 @@ export const AuthContextProvider = ({ children }) => {
   );
 };
 
+export function useAuthContext() {
+  return useContext(AuthContext);
+}
+
 export function useAuth() {
   const {
     tokens,
@@ -100,12 +108,9 @@ export function useAuth() {
     setTokens,
     authenticateUser,
     requestAndApplyNewAccessToken,
-  } = useContext(AuthContext);
+  } = useAuthContext();
 
-  useEffect(() => {
-    if (!isLoading) return;
-    authenticateUser();
-  }, [isLoading, isAuthenticated, authenticateUser]);
+  useEffect(() => authenticateUser(), [authenticateUser]);
 
   const makeAuthenticatedRequest = useCallback(
     async (fetcher) => {

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 import * as accountsServices from '~/services/accounts';
 
@@ -16,21 +16,35 @@ export const AccountContextProvider = ({ children }) => {
   );
 };
 
+export function useAccountContext() {
+  return useContext(AccountContext);
+}
+
 export function useAccount() {
-  const { accountData, setAccountData } = useContext(AccountContext);
+  const { accountData, setAccountData } = useAccountContext();
 
   const { isAuthenticated, makeAuthenticatedRequest } = useAuth();
 
+  const isRequestingAccountData = useRef(false);
+
   useEffect(() => {
-    if (accountData || !isAuthenticated) return;
+    if (accountData || !isAuthenticated || isRequestingAccountData.current)
+      return;
 
-    (async () => {
-      const requestedAccountData = await makeAuthenticatedRequest(
-        (accessToken) => accountsServices.details(accessToken),
-      );
+    isRequestingAccountData.current = true;
 
-      setAccountData(requestedAccountData);
-    })();
+    const requestAndApplyAccountData = async () => {
+      try {
+        const requestedAccountData = await makeAuthenticatedRequest(
+          (accessToken) => accountsServices.details(accessToken),
+        );
+        setAccountData(requestedAccountData);
+      } finally {
+        isRequestingAccountData.current = false;
+      }
+    };
+
+    requestAndApplyAccountData();
   }, [accountData, setAccountData, isAuthenticated, makeAuthenticatedRequest]);
 
   return { accountData, setAccountData };
