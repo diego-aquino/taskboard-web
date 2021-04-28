@@ -1,0 +1,46 @@
+@import '../../partials/variables';
+
+.container {
+  width: 100vw;
+  height: 100vh;
+
+  padding: 1.6rem;
+
+  display: none;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+
+  &.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .innerContainer {
+    padding: 3.2rem;
+    border-radius: 1.6rem;
+
+    background-color: $color-white;
+  }
+
+  .clickableBackground {
+    border: none;
+    outline: none;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    font-size: 0;
+
+    background-color: transparent;
+    z-index: -1;
+  }
+}
