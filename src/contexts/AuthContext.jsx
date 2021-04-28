@@ -41,9 +41,12 @@ export const AuthContextProvider = ({ children }) => {
     }));
   }, []);
 
-  const authenticateUser = useCallback(async () => {
-    if (isAuthenticated) return;
+  const isRequestingAuthentication = useRef(false);
 
+  const authenticateUser = useCallback(async () => {
+    if (isAuthenticated || isRequestingAuthentication.current) return;
+
+    isRequestingAuthentication.current = true;
     setIsLoading(true);
 
     const refreshToken =
@@ -52,18 +55,18 @@ export const AuthContextProvider = ({ children }) => {
 
     if (!refreshToken) {
       setIsLoading(false);
+      isRequestingAuthentication.current = false;
     }
 
-    let accessToken;
     try {
-      accessToken = await accountsServices.token(refreshToken);
-    } catch {
-      setIsLoading(false);
-    }
+      const accessToken = await accountsServices.token(refreshToken);
 
-    setTokens({ accessToken, refreshToken });
-    saveToLocalStorage(localStorageKeys.REFRESH_TOKEN, refreshToken);
-    setIsLoading(false);
+      setTokens({ accessToken, refreshToken });
+      saveToLocalStorage(localStorageKeys.REFRESH_TOKEN, refreshToken);
+    } finally {
+      setIsLoading(false);
+      isRequestingAuthentication.current = false;
+    }
   }, [tokens.refreshToken, isAuthenticated]);
 
   const requestAndApplyNewAccessToken = useCallback(
@@ -107,18 +110,7 @@ export function useAuth() {
     requestAndApplyNewAccessToken,
   } = useAuthContext();
 
-  const isAuthenticating = useRef(false);
-
-  useEffect(() => {
-    if (isAuthenticating.current || isAuthenticated) return;
-
-    isAuthenticating.current = true;
-
-    (async () => {
-      await authenticateUser();
-      isAuthenticating.current = false;
-    })();
-  }, [isLoading, isAuthenticated, authenticateUser]);
+  useEffect(() => authenticateUser(), [authenticateUser]);
 
   const makeAuthenticatedRequest = useCallback(
     async (fetcher) => {
