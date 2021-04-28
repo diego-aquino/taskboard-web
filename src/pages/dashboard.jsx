@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   InfoIcon,
@@ -21,12 +21,55 @@ const DashboardPage = () => {
 
   const { isAuthenticated, isLoading: isLoadingAuth } = useAuth();
   const { accountData } = useAccount();
-  const { tasks } = useTasks();
+  const { tasks, sortByPriority, sortByName } = useTasks();
+
+  const [sortingCriteria, setSortingCriteria] = useState('priority');
+  const [sortingOrder, setSortingOrder] = useState('desc');
+
+  const [tasksAreSorted, setTasksAreSorted] = useState(false);
 
   const userFullName = useMemo(() => {
     if (!accountData) return '';
     return `${accountData.firstName} ${accountData.lastName}`;
   }, [accountData]);
+
+  const sortTasks = useCallback(
+    (criteria, order) => {
+      const ascending = order === 'asc';
+
+      if (criteria === 'priority') {
+        sortByPriority(ascending);
+      } else {
+        sortByName(ascending);
+      }
+    },
+    [sortByName, sortByPriority],
+  );
+
+  useEffect(() => {
+    if (tasks.length === 0 || tasksAreSorted) return;
+
+    sortTasks(sortingCriteria, sortingOrder);
+    setTasksAreSorted(true);
+  }, [tasks, tasksAreSorted, sortingCriteria, sortingOrder, sortTasks]);
+
+  const updateSortingCriteria = useCallback(
+    (newSortingCriteria) => {
+      if (newSortingCriteria === sortingCriteria) return;
+      setSortingCriteria(newSortingCriteria);
+      sortTasks(newSortingCriteria, sortingOrder);
+    },
+    [sortTasks, sortingCriteria, sortingOrder],
+  );
+
+  const updateSortingOrder = useCallback(
+    (newSortingOrder) => {
+      if (newSortingOrder === sortingOrder) return;
+      setSortingOrder(newSortingOrder);
+      sortTasks(sortingCriteria, newSortingOrder);
+    },
+    [sortTasks, sortingCriteria, sortingOrder],
+  );
 
   useEffect(() => {
     const shouldRedirect = !isLoadingAuth && !isAuthenticated;
@@ -89,26 +132,34 @@ const DashboardPage = () => {
                 leftValue="Prioridade"
                 rightName="name"
                 rightValue="Nome"
-                onChange={() => {}}
+                onChange={updateSortingCriteria}
               />
             </div>
             <div className={styles.sortingOrder}>
-              <select name="sortingOrder">
-                <option value="high">Alta</option>
-                <option value="low">Baixa</option>
+              <select
+                name="sortingOrder"
+                onChange={(event) => updateSortingOrder(event.target.value)}
+              >
+                <option value="desc">
+                  {sortingCriteria === 'priority' ? 'Alta' : 'Alfabética ↓'}
+                </option>
+                <option value="asc">
+                  {sortingCriteria === 'priority' ? 'Baixa' : 'Alfabética ↑'}
+                </option>
               </select>
             </div>
           </div>
         </div>
         <div className={styles.taskList}>
-          {tasks.map((task) => (
-            <Task
-              key={task.id}
-              name={task.name}
-              priority={task.priority}
-              completed={task.isCompleted}
-            />
-          ))}
+          {tasksAreSorted &&
+            tasks.map((task) => (
+              <Task
+                key={task.id}
+                name={task.name}
+                priority={task.priority}
+                completed={task.isCompleted}
+              />
+            ))}
         </div>
       </main>
     </div>
