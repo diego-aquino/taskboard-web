@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from 'react';
 
@@ -92,6 +93,10 @@ export const AuthContextProvider = ({ children }) => {
   );
 };
 
+export function useAuthContext() {
+  return useContext(AuthContext);
+}
+
 export function useAuth() {
   const {
     tokens,
@@ -100,11 +105,19 @@ export function useAuth() {
     setTokens,
     authenticateUser,
     requestAndApplyNewAccessToken,
-  } = useContext(AuthContext);
+  } = useAuthContext();
+
+  const isAuthenticating = useRef(false);
 
   useEffect(() => {
-    if (!isLoading) return;
-    authenticateUser();
+    if (isAuthenticating.current || isAuthenticated) return;
+
+    isAuthenticating.current = true;
+
+    (async () => {
+      await authenticateUser();
+      isAuthenticating.current = false;
+    })();
   }, [isLoading, isAuthenticated, authenticateUser]);
 
   const makeAuthenticatedRequest = useCallback(

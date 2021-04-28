@@ -5,8 +5,8 @@ import { useCallback, useRef } from 'react';
 
 import { AbstractSquares, PersonWithPosters } from '~/assets';
 import { SignUpForm } from '~/components/homePage';
-import { useAccount } from '~/contexts/AccountContext';
-import { useAuth } from '~/contexts/AuthContext';
+import { useAccountContext } from '~/contexts/AccountContext';
+import { useAuthContext } from '~/contexts/AuthContext';
 import * as accountsServices from '~/services/accounts';
 import styles from '~/styles/pages/SignUpPage.module.scss';
 import { localStorageKeys, saveToLocalStorage } from '~/utils/local';
@@ -15,8 +15,8 @@ import * as network from '~/utils/network';
 const SignUpPage = () => {
   const router = useRouter();
 
-  const { setAccountData } = useAccount();
-  const { setTokens } = useAuth();
+  const { setAccountData } = useAccountContext();
+  const { setTokens } = useAuthContext();
 
   const signUpFormRef = useRef(null);
 

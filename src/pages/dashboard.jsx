@@ -13,13 +13,15 @@ import { SwitchButton } from '~/components/common';
 import { Task } from '~/components/dashboardPage';
 import { useAccount } from '~/contexts/AccountContext';
 import { useAuth } from '~/contexts/AuthContext';
+import useTasks from '~/hooks/useTasks';
 import styles from '~/styles/pages/DashboardPage.module.scss';
 
 const DashboardPage = () => {
   const router = useRouter();
 
-  const { accountData } = useAccount();
   const { isAuthenticated, isLoading: isLoadingAuth } = useAuth();
+  const { accountData } = useAccount();
+  const { tasks } = useTasks();
 
   const userFullName = useMemo(() => {
     if (!accountData) return '';
@@ -99,13 +101,14 @@ const DashboardPage = () => {
           </div>
         </div>
         <div className={styles.taskList}>
-          {/* example tasks */}
-          <Task name="My task 1" priority="high" completed />
-          <Task name="My task 2" priority="low" completed />
-          <Task name="My task 3" priority="high" />
-          <Task name="My task 5" priority="low" />
-          <Task name="My task 4" priority="high" />
-          <Task name="My task 6" priority="high" />
+          {tasks.map((task) => (
+            <Task
+              key={task.id}
+              name={task.name}
+              priority={task.priority}
+              completed={task.isCompleted}
+            />
+          ))}
         </div>
       </main>
     </div>

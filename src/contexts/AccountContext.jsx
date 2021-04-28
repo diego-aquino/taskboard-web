@@ -16,8 +16,12 @@ export const AccountContextProvider = ({ children }) => {
   );
 };
 
+export function useAccountContext() {
+  return useContext(AccountContext);
+}
+
 export function useAccount() {
-  const { accountData, setAccountData } = useContext(AccountContext);
+  const { accountData, setAccountData } = useAccountContext();
 
   const { isAuthenticated, makeAuthenticatedRequest } = useAuth();
 
