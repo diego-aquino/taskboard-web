@@ -15,11 +15,12 @@ import { useAccount } from '~/contexts/AccountContext';
 import { useAuth } from '~/contexts/AuthContext';
 import useTasks from '~/hooks/useTasks';
 import styles from '~/styles/pages/DashboardPage.module.scss';
+import { localStorageKeys, removeTokenFromLocalStorage } from '~/utils/local';
 
 const DashboardPage = () => {
   const router = useRouter();
 
-  const { isAuthenticated, isLoading: isLoadingAuth } = useAuth();
+  const { isAuthenticated, isLoading: isLoadingAuth, logoutUser } = useAuth();
   const { accountData } = useAccount();
   const { tasks, sortTasks, createTask } = useTasks();
 
@@ -68,6 +69,13 @@ const DashboardPage = () => {
     [createTask, sortingCriteria, sortingOrder],
   );
 
+  const logoutAccount = async () => {
+    await logoutUser;
+
+    removeTokenFromLocalStorage(localStorageKeys.REFRESH_TOKEN);
+    router.push('/login');
+  };
+
   useEffect(() => {
     const shouldRedirect = !isLoadingAuth && !isAuthenticated;
     if (shouldRedirect) {
@@ -113,7 +121,7 @@ const DashboardPage = () => {
           <button type="button">
             <InfoIcon /> Sobre
           </button>
-          <button type="button">
+          <button type="button" onClick={logoutAccount}>
             <LogoutIcon /> Logout
           </button>
         </div>
