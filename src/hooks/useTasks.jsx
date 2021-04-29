@@ -107,7 +107,27 @@ function useTasks() {
     [isAuthenticated, makeAuthenticatedRequest, insertSortedTask],
   );
 
-  return { tasks, sortTasks, createTask };
+  const editTask = useCallback(
+    (taskId, newTaskData) => {
+      if (!isAuthenticated) return;
+
+      makeAuthenticatedRequest((accessToken) =>
+        tasksServices.edit(accessToken, taskId, newTaskData),
+      );
+
+      setTasks((currentTasks) =>
+        currentTasks.map((task) => {
+          const isTaskBeingEdited = task.id === taskId;
+          if (!isTaskBeingEdited) return task;
+
+          return { ...task, ...newTaskData };
+        }),
+      );
+    },
+    [isAuthenticated, makeAuthenticatedRequest],
+  );
+
+  return { tasks, sortTasks, createTask, editTask };
 }
 
 export default useTasks;

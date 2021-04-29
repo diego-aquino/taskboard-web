@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   InfoIcon,
@@ -9,8 +9,8 @@ import {
   PlusIcon,
   LoadingIcon,
 } from '~/assets';
-import { Modal, SwitchButton } from '~/components/common';
-import { Task, TaskForm } from '~/components/dashboardPage';
+import { SwitchButton } from '~/components/common';
+import { Task, TaskModalForm } from '~/components/dashboardPage';
 import { useAccount } from '~/contexts/AccountContext';
 import { useAuth } from '~/contexts/AuthContext';
 import useTasks from '~/hooks/useTasks';
@@ -21,14 +21,20 @@ const DashboardPage = () => {
 
   const { isAuthenticated, isLoading: isLoadingAuth } = useAuth();
   const { accountData } = useAccount();
-  const { tasks, sortTasks, createTask } = useTasks();
+  const { tasks, sortTasks, createTask, editTask } = useTasks();
 
   const [sortingCriteria, setSortingCriteria] = useState('priority');
   const [sortingOrder, setSortingOrder] = useState('desc');
 
   const [tasksAreSorted, setTasksAreSorted] = useState(false);
 
-  const [taskFormIsActive, setTaskFormIsOpen] = useState(false);
+  const [taskModalFormStatus, setTaskModalFormStatus] = useState('closed');
+  const [initialTaskFormValues, setInitialTaskFormValues] = useState({
+    name: '',
+    priority: 'high',
+  });
+
+  const idOfTaskBeingEditedRef = useRef(null);
 
   const userFullName = useMemo(() => {
     if (!accountData) return '';
@@ -60,12 +66,42 @@ const DashboardPage = () => {
     [sortTasks, sortingCriteria, sortingOrder],
   );
 
+  const openTaskCreationForm = useCallback(() => {
+    setTaskModalFormStatus('create');
+    setInitialTaskFormValues({ name: '', priority: 'high' });
+  }, []);
+
+  const openTaskEditingForm = useCallback((taskData) => {
+    setTaskModalFormStatus('edit');
+    idOfTaskBeingEditedRef.current = taskData.id;
+
+    const { name, priority } = taskData;
+    setInitialTaskFormValues({ name, priority });
+  }, []);
+
   const handleTaskCreation = useCallback(
     (taskData) => {
-      setTaskFormIsOpen(false);
+      setTaskModalFormStatus('closed');
       createTask(taskData, { sortingCriteria, sortingOrder });
     },
     [createTask, sortingCriteria, sortingOrder],
+  );
+
+  const handleTaskEditing = useCallback(
+    ({ name, priority }) => {
+      setTaskModalFormStatus('closed');
+
+      const taskId = idOfTaskBeingEditedRef.current;
+      editTask(taskId, { name, priority });
+    },
+    [editTask],
+  );
+
+  const updateTaskCheckedState = useCallback(
+    ({ id: taskId, isChecked }) => {
+      editTask(taskId, { isCompleted: isChecked });
+    },
+    [editTask],
   );
 
   useEffect(() => {
@@ -89,12 +125,13 @@ const DashboardPage = () => {
         <title>Dashboard | Tarefas</title>
       </Head>
 
-      <Modal active={taskFormIsActive} onClose={() => setTaskFormIsOpen(false)}>
-        <TaskForm
-          onValidSubmit={handleTaskCreation}
-          submitButtonText="Criar tarefa"
-        />
-      </Modal>
+      <TaskModalForm
+        status={taskModalFormStatus}
+        initialValues={initialTaskFormValues}
+        onCreateTask={handleTaskCreation}
+        onEditTask={handleTaskEditing}
+        onClose={() => setTaskModalFormStatus('closed')}
+      />
 
       <aside>
         <div className={styles.userInfo}>
@@ -104,7 +141,7 @@ const DashboardPage = () => {
           <h1>{userFullName}</h1>
         </div>
         <div className={styles.sidebarMenu}>
-          <button type="button" onClick={() => setTaskFormIsOpen(true)}>
+          <button type="button" onClick={openTaskCreationForm}>
             <PlusIcon /> Nova Tarefa
           </button>
           <button type="button">
@@ -159,9 +196,12 @@ const DashboardPage = () => {
             tasks.map((task) => (
               <Task
                 key={task.id}
+                id={task.id}
                 name={task.name}
                 priority={task.priority}
-                completed={task.isCompleted}
+                checked={task.isCompleted}
+                onTaskClick={openTaskEditingForm}
+                onCheck={updateTaskCheckedState}
               />
             ))}
         </div>
