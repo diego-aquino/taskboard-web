@@ -1,12 +1,15 @@
 import { useCallback, useRef } from 'react';
 
+import { TrashIcon } from '~/assets';
 import { Button, Input } from '~/components/common';
 import styles from '~/styles/components/dashboardPage/TaskForm.module.scss';
 import * as validate from '~/utils/validation';
 
-const TaskCreationForm = ({
+const TaskForm = ({
   onValidSubmit,
   submitButtonText,
+  showRemoveButton = false,
+  onRemoveButtonClick,
   initialValues = {},
 }) => {
   const taskNameInputRef = useRef(null);
@@ -29,14 +32,28 @@ const TaskCreationForm = ({
 
   return (
     <form className={styles.container} onSubmit={handleSubmit}>
-      <Input
-        ref={taskNameInputRef}
-        name="taskName"
-        validate={validate.requiredTextField}
-        variant="outline"
-        placeholder="Nome..."
-        initialValue={initialValues.name}
-      />
+      <div className={styles.firstLineContainer}>
+        <Input
+          ref={taskNameInputRef}
+          name="taskName"
+          validate={validate.requiredTextField}
+          variant="outline"
+          placeholder="Nome..."
+          initialValue={initialValues.name}
+        />
+
+        {showRemoveButton && (
+          <button
+            className={styles.removeTaskButton}
+            type="button"
+            onClick={onRemoveButtonClick}
+            title="Remover tarefa"
+          >
+            <TrashIcon />
+            Remover tarefa
+          </button>
+        )}
+      </div>
 
       <div className={styles.prioritySelectContainer}>
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
@@ -57,4 +74,4 @@ const TaskCreationForm = ({
   );
 };
 
-export default TaskCreationForm;
+export default TaskForm;
