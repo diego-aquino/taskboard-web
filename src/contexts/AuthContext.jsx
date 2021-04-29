@@ -56,6 +56,7 @@ export const AuthContextProvider = ({ children }) => {
     if (!refreshToken) {
       setIsLoading(false);
       isRequestingAuthentication.current = false;
+      return;
     }
 
     try {
@@ -63,6 +64,8 @@ export const AuthContextProvider = ({ children }) => {
 
       setTokens({ accessToken, refreshToken });
       saveToLocalStorage(localStorageKeys.REFRESH_TOKEN, refreshToken);
+    } catch {
+      // eslint-disable-line no-empty
     } finally {
       setIsLoading(false);
       isRequestingAuthentication.current = false;

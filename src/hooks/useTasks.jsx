@@ -44,54 +44,44 @@ function useTasks() {
     })();
   }, [isAuthenticated, makeAuthenticatedRequest]);
 
-  const sortByPriority = useCallback((ascending = true) => {
-    setTasks((currentTasks) => sortTasksByPriority(currentTasks, ascending));
-  }, []);
+  const sortTasks = useCallback((criteria, order) => {
+    const ascending = order === 'asc';
 
-  const sortByName = useCallback((ascending = true) => {
-    setTasks((currentTasks) => sortTasksByName(currentTasks, ascending));
-  }, []);
-
-  const sortTasks = useCallback(
-    (criteria, order) => {
-      const ascending = order === 'asc';
-
-      if (criteria === 'priority') {
-        sortByPriority(ascending);
-      } else {
-        sortByName(ascending);
-      }
-    },
-    [sortByName, sortByPriority],
-  );
-
-  const insertTaskSortedByPriority = useCallback(
-    (newTask, ascending = true) => {
-      setTasks((currentTasks) =>
-        sortTasksByPriority([...currentTasks, newTask], ascending),
-      );
-    },
-    [],
-  );
-
-  const insertTaskSortedByName = useCallback((newTask, ascending = true) => {
     setTasks((currentTasks) =>
-      sortTasksByName([...currentTasks, newTask], ascending),
+      criteria === 'priority'
+        ? sortTasksByPriority(currentTasks, ascending)
+        : sortTasksByName(currentTasks, ascending),
     );
   }, []);
 
-  const insertSortedTask = useCallback(
-    (newTask, criteria, order) => {
-      const ascending = order === 'asc';
+  const insertSortedTask = useCallback((newTask, criteria, order) => {
+    const ascending = order === 'asc';
 
-      if (criteria === 'priority') {
-        insertTaskSortedByPriority(newTask, ascending);
-      } else {
-        insertTaskSortedByName(newTask, ascending);
-      }
-    },
-    [insertTaskSortedByName, insertTaskSortedByPriority],
-  );
+    setTasks((currentTasks) => {
+      const updatedTasks = [...currentTasks, newTask];
+
+      return criteria === 'priority'
+        ? sortTasksByPriority(updatedTasks, ascending)
+        : sortTasksByName(updatedTasks, ascending);
+    });
+  }, []);
+
+  const editSortedTask = useCallback((taskId, newTaskData, criteria, order) => {
+    const ascending = order === 'asc';
+
+    setTasks((currentTasks) => {
+      const updatedTasks = currentTasks.map((task) => {
+        const isTaskBeingEdited = task.id === taskId;
+        if (!isTaskBeingEdited) return task;
+
+        return { ...task, ...newTaskData };
+      });
+
+      return criteria === 'priority'
+        ? sortTasksByPriority(updatedTasks, ascending)
+        : sortTasksByName(updatedTasks, ascending);
+    });
+  }, []);
 
   const createTask = useCallback(
     ({ name, priority }, { sortingCriteria, sortingOrder }) => {
@@ -107,7 +97,35 @@ function useTasks() {
     [isAuthenticated, makeAuthenticatedRequest, insertSortedTask],
   );
 
-  return { tasks, sortTasks, createTask };
+  const editTask = useCallback(
+    (taskId, newTaskData, { sortingCriteria, sortingOrder }) => {
+      if (!isAuthenticated) return;
+
+      makeAuthenticatedRequest((accessToken) =>
+        tasksServices.edit(accessToken, taskId, newTaskData),
+      );
+
+      editSortedTask(taskId, newTaskData, sortingCriteria, sortingOrder);
+    },
+    [editSortedTask, isAuthenticated, makeAuthenticatedRequest],
+  );
+
+  const removeTask = useCallback(
+    (taskId) => {
+      if (!isAuthenticated) return;
+
+      makeAuthenticatedRequest((accessToken) =>
+        tasksServices.remove(accessToken, taskId),
+      );
+
+      setTasks((currentTasks) =>
+        currentTasks.filter((task) => task.id !== taskId),
+      );
+    },
+    [isAuthenticated, makeAuthenticatedRequest],
+  );
+
+  return { tasks, sortTasks, createTask, editTask, removeTask };
 }
 
 export default useTasks;

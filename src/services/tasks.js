@@ -18,3 +18,15 @@ export async function list(accessToken) {
 
   return tasks;
 }
+
+export async function edit(accessToken, taskId, newTaskData) {
+  await api.put(`/tasks/${taskId}`, newTaskData, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+}
+
+export async function remove(accessToken, taskId) {
+  await api.delete(`/tasks/${taskId}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+}

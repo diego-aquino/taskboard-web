@@ -1,10 +1,17 @@
 import { useCallback, useRef } from 'react';
 
+import { TrashIcon } from '~/assets';
 import { Button, Input } from '~/components/common';
 import styles from '~/styles/components/dashboardPage/TaskForm.module.scss';
 import * as validate from '~/utils/validation';
 
-const TaskCreationForm = ({ onValidSubmit, submitButtonText }) => {
+const TaskForm = ({
+  onValidSubmit,
+  submitButtonText,
+  showRemoveButton = false,
+  onRemoveButtonClick,
+  initialValues = {},
+}) => {
   const taskNameInputRef = useRef(null);
   const taskPrioritySelectRef = useRef(null);
 
@@ -18,23 +25,35 @@ const TaskCreationForm = ({ onValidSubmit, submitButtonText }) => {
       const taskName = taskNameInputRef.current?.value;
       const taskPriority = taskPrioritySelectRef.current?.value;
 
-      if (onValidSubmit) {
-        onValidSubmit?.({ name: taskName, priority: taskPriority });
-        taskNameInputRef.current.clear();
-      }
+      onValidSubmit?.({ name: taskName, priority: taskPriority });
     },
     [onValidSubmit],
   );
 
   return (
     <form className={styles.container} onSubmit={handleSubmit}>
-      <Input
-        ref={taskNameInputRef}
-        name="taskName"
-        validate={validate.requiredTextField}
-        variant="outline"
-        placeholder="Nome..."
-      />
+      <div className={styles.firstLineContainer}>
+        <Input
+          ref={taskNameInputRef}
+          name="taskName"
+          validate={validate.requiredTextField}
+          variant="outline"
+          placeholder="Nome..."
+          initialValue={initialValues.name}
+        />
+
+        {showRemoveButton && (
+          <button
+            className={styles.removeTaskButton}
+            type="button"
+            onClick={onRemoveButtonClick}
+            title="Remover tarefa"
+          >
+            <TrashIcon />
+            Remover tarefa
+          </button>
+        )}
+      </div>
 
       <div className={styles.prioritySelectContainer}>
         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
@@ -43,6 +62,7 @@ const TaskCreationForm = ({ onValidSubmit, submitButtonText }) => {
           ref={taskPrioritySelectRef}
           id="taskPriority"
           name="taskPriority"
+          defaultValue={initialValues.priority}
         >
           <option value="high">Alta</option>
           <option value="low">Baixa</option>
@@ -54,4 +74,4 @@ const TaskCreationForm = ({ onValidSubmit, submitButtonText }) => {
   );
 };
 
-export default TaskCreationForm;
+export default TaskForm;
