@@ -7,6 +7,7 @@ const TaskModalForm = ({
   initialValues = {},
   onCreateTask,
   onEditTask,
+  onRemoveTask,
   onClose,
 }) => {
   const modalIsActive = status !== 'closed';
@@ -17,6 +18,8 @@ const TaskModalForm = ({
         <TaskForm
           initialValues={initialValues}
           onValidSubmit={status === 'create' ? onCreateTask : onEditTask}
+          showRemoveButton={status === 'edit'}
+          onRemoveButtonClick={onRemoveTask}
           submitButtonText={
             status === 'create' ? 'Criar tarefa' : 'Editar tarefa'
           }

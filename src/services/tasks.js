@@ -24,3 +24,9 @@ export async function edit(accessToken, taskId, newTaskData) {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 }
+
+export async function remove(accessToken, taskId) {
+  await api.delete(`/tasks/${taskId}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+}

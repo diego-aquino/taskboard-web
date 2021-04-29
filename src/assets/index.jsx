@@ -7,6 +7,7 @@ import LogoutIcon from './logout.svg';
 import PersonWithPosters from './person-with-posters.svg';
 import PersonWithSmartphone from './person-with-smartphone.svg';
 import PlusIcon from './plus.svg';
+import TrashIcon from './trash.svg';
 import UserProfile from './user-profile.svg';
 
 export {
@@ -20,4 +21,5 @@ export {
   PlusIcon,
   LoadingIcon,
   CheckMarkIcon,
+  TrashIcon,
 };

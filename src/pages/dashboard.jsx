@@ -21,7 +21,7 @@ const DashboardPage = () => {
 
   const { isAuthenticated, isLoading: isLoadingAuth } = useAuth();
   const { accountData } = useAccount();
-  const { tasks, sortTasks, createTask, editTask } = useTasks();
+  const { tasks, sortTasks, createTask, editTask, removeTask } = useTasks();
 
   const [sortingCriteria, setSortingCriteria] = useState('priority');
   const [sortingOrder, setSortingOrder] = useState('desc');
@@ -79,7 +79,7 @@ const DashboardPage = () => {
     setInitialTaskFormValues({ name, priority });
   }, []);
 
-  const handleTaskCreation = useCallback(
+  const handleTaskCreate = useCallback(
     (taskData) => {
       setTaskModalFormStatus('closed');
       createTask(taskData, { sortingCriteria, sortingOrder });
@@ -87,21 +87,32 @@ const DashboardPage = () => {
     [createTask, sortingCriteria, sortingOrder],
   );
 
-  const handleTaskEditing = useCallback(
+  const handleTaskEdit = useCallback(
     ({ name, priority }) => {
       setTaskModalFormStatus('closed');
 
       const taskId = idOfTaskBeingEditedRef.current;
-      editTask(taskId, { name, priority });
+      editTask(taskId, { name, priority }, { sortingCriteria, sortingOrder });
     },
-    [editTask],
+    [editTask, sortingCriteria, sortingOrder],
   );
+
+  const handleTaskRemove = useCallback(() => {
+    setTaskModalFormStatus('closed');
+
+    const taskId = idOfTaskBeingEditedRef.current;
+    removeTask(taskId);
+  }, [removeTask]);
 
   const updateTaskCheckedState = useCallback(
     ({ id: taskId, isChecked }) => {
-      editTask(taskId, { isCompleted: isChecked });
+      editTask(
+        taskId,
+        { isCompleted: isChecked },
+        { sortingCriteria, sortingOrder },
+      );
     },
-    [editTask],
+    [editTask, sortingCriteria, sortingOrder],
   );
 
   useEffect(() => {
@@ -128,8 +139,9 @@ const DashboardPage = () => {
       <TaskModalForm
         status={taskModalFormStatus}
         initialValues={initialTaskFormValues}
-        onCreateTask={handleTaskCreation}
-        onEditTask={handleTaskEditing}
+        onCreateTask={handleTaskCreate}
+        onEditTask={handleTaskEdit}
+        onRemoveTask={handleTaskRemove}
         onClose={() => setTaskModalFormStatus('closed')}
       />
 

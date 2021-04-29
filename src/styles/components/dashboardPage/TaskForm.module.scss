@@ -4,6 +4,16 @@
   width: 100%;
   min-width: 32rem;
 
+  .firstLineContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    > *:first-child {
+      flex: 1;
+    }
+  }
+
   input {
     font-size: 1.8rem;
   }
@@ -21,7 +31,37 @@
     }
   }
 
-  button {
+  .removeTaskButton {
+    margin-left: 1.6rem;
+    padding: 0.6rem;
+    border: none;
+    border-radius: 50%;
+    border-width: 1px solid transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 0;
+    color: $color-light-blue;
+
+    cursor: pointer;
+    background-color: transparent;
+    transition: background-color $transition-duration-fast,
+      color $transition-duration-fast;
+
+    &:hover {
+      color: $color-light-red;
+      background-color: rgba($color-light-red, 0.1);
+    }
+
+    svg {
+      width: 2.2rem;
+      height: 2.3rem;
+    }
+  }
+
+  button[type='submit'] {
     margin-top: 3.2rem;
   }
 }
