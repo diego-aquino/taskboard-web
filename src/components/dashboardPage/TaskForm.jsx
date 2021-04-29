@@ -11,6 +11,7 @@ const TaskForm = ({
   showRemoveButton = false,
   onRemoveButtonClick,
   initialValues = {},
+  loading: isLoading,
 }) => {
   const taskNameInputRef = useRef(null);
   const taskPrioritySelectRef = useRef(null);
@@ -69,7 +70,9 @@ const TaskForm = ({
         </select>
       </div>
 
-      <Button type="submit">{submitButtonText}</Button>
+      <Button type="submit" loading={isLoading}>
+        {submitButtonText}
+      </Button>
     </form>
   );
 };

@@ -13,7 +13,7 @@ import * as validate from '~/utils/validation';
 
 const { ValidationError } = yup;
 
-const SignUpForm = ({ onValidSubmit }, ref) => {
+const SignUpForm = ({ onValidSubmit, loading: isLoading }, ref) => {
   const firstNameInputRef = useRef(null);
   const lastNameInputRef = useRef(null);
   const emailInputRef = useRef(null);
@@ -153,7 +153,9 @@ const SignUpForm = ({ onValidSubmit }, ref) => {
         />
       )}
 
-      <Button type="submit">Registrar</Button>
+      <Button type="submit" loading={isLoading}>
+        Registrar
+      </Button>
     </form>
   );
 };

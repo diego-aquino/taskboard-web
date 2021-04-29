@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { AbstractSquares, PersonWithSmartphone } from '~/assets';
 import { LoginForm } from '~/components/homePage';
@@ -17,6 +17,7 @@ const LoginPage = () => {
   const { setTokens } = useAuthContext();
 
   const loginFormRef = useRef(null);
+  const [isLoadingLogin, setIsLoadingLogin] = useState(false);
 
   const loginAccount = useCallback(
     async (accountData) => {
@@ -41,10 +42,13 @@ const LoginPage = () => {
   const handleValidFormSubmit = useCallback(
     async ({ email, password }) => {
       try {
+        setIsLoadingLogin(true);
         await loginAccount({ email, password });
         router.push('/dashboard');
       } catch (error) {
         handleLoginError(error);
+      } finally {
+        setIsLoadingLogin(false);
       }
     },
     [loginAccount, handleLoginError, router],
@@ -60,7 +64,11 @@ const LoginPage = () => {
         <h1>Login</h1>
         <p>Seja bem vindo de volta!</p>
 
-        <LoginForm ref={loginFormRef} onValidSubmit={handleValidFormSubmit} />
+        <LoginForm
+          ref={loginFormRef}
+          onValidSubmit={handleValidFormSubmit}
+          loading={isLoadingLogin}
+        />
 
         <div className={styles.center}>
           <span>Não tem uma conta?</span>

@@ -84,15 +84,13 @@ function useTasks() {
   }, []);
 
   const createTask = useCallback(
-    ({ name, priority }, { sortingCriteria, sortingOrder }) => {
+    async ({ name, priority }, { sortingCriteria, sortingOrder }) => {
       if (!isAuthenticated) return;
 
-      (async () => {
-        const createdTask = await makeAuthenticatedRequest((accessToken) =>
-          tasksServices.create(accessToken, { name, priority }),
-        );
-        insertSortedTask(createdTask, sortingCriteria, sortingOrder);
-      })();
+      const createdTask = await makeAuthenticatedRequest((accessToken) =>
+        tasksServices.create(accessToken, { name, priority }),
+      );
+      insertSortedTask(createdTask, sortingCriteria, sortingOrder);
     },
     [isAuthenticated, makeAuthenticatedRequest, insertSortedTask],
   );

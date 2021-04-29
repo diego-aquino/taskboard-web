@@ -9,6 +9,7 @@ const TaskModalForm = ({
   onEditTask,
   onRemoveTask,
   onClose,
+  loading: isLoading,
 }) => {
   const modalIsActive = status !== 'closed';
 
@@ -23,6 +24,7 @@ const TaskModalForm = ({
           submitButtonText={
             status === 'create' ? 'Criar tarefa' : 'Editar tarefa'
           }
+          loading={isLoading}
         />
       )}
     </Modal>
