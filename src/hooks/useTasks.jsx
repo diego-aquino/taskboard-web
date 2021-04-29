@@ -32,15 +32,18 @@ function useTasks() {
   const { isAuthenticated, makeAuthenticatedRequest } = useAuth();
 
   const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) return;
 
     (async () => {
+      setIsLoading(true);
       const requestedTasks = await makeAuthenticatedRequest((accessToken) =>
         tasksServices.list(accessToken),
       );
       setTasks(requestedTasks);
+      setIsLoading(false);
     })();
   }, [isAuthenticated, makeAuthenticatedRequest]);
 
@@ -123,7 +126,7 @@ function useTasks() {
     [isAuthenticated, makeAuthenticatedRequest],
   );
 
-  return { tasks, sortTasks, createTask, editTask, removeTask };
+  return { tasks, isLoading, sortTasks, createTask, editTask, removeTask };
 }
 
 export default useTasks;

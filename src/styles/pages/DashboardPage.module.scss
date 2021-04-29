@@ -299,6 +299,20 @@
 
     overflow-y: auto;
 
+    &.noTasks {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    .noTasksMessage {
+      margin-top: 1.6rem;
+
+      color: $color-light-blue;
+      text-align: center;
+      font-style: italic;
+
+      opacity: 0.9;
+    }
+
     @media (max-width: 960px) {
       grid-template-columns: repeat(2, 1fr);
     }
