@@ -11,6 +11,7 @@ const Input = (
     name,
     validate,
     variant = 'normal',
+    initialValue = '',
     className,
     onChange,
     onBlur,
@@ -18,7 +19,7 @@ const Input = (
   },
   ref,
 ) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(initialValue);
   const [alertMessage, setAlertMessage] = useState(null);
 
   const executeValidation = useCallback(

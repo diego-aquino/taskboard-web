@@ -4,7 +4,11 @@ import { Button, Input } from '~/components/common';
 import styles from '~/styles/components/dashboardPage/TaskForm.module.scss';
 import * as validate from '~/utils/validation';
 
-const TaskCreationForm = ({ onValidSubmit, submitButtonText }) => {
+const TaskCreationForm = ({
+  onValidSubmit,
+  submitButtonText,
+  initialValues = {},
+}) => {
   const taskNameInputRef = useRef(null);
   const taskPrioritySelectRef = useRef(null);
 
@@ -18,10 +22,7 @@ const TaskCreationForm = ({ onValidSubmit, submitButtonText }) => {
       const taskName = taskNameInputRef.current?.value;
       const taskPriority = taskPrioritySelectRef.current?.value;
 
-      if (onValidSubmit) {
-        onValidSubmit?.({ name: taskName, priority: taskPriority });
-        taskNameInputRef.current.clear();
-      }
+      onValidSubmit?.({ name: taskName, priority: taskPriority });
     },
     [onValidSubmit],
   );
@@ -34,6 +35,7 @@ const TaskCreationForm = ({ onValidSubmit, submitButtonText }) => {
         validate={validate.requiredTextField}
         variant="outline"
         placeholder="Nome..."
+        initialValue={initialValues.name}
       />
 
       <div className={styles.prioritySelectContainer}>
@@ -43,6 +45,7 @@ const TaskCreationForm = ({ onValidSubmit, submitButtonText }) => {
           ref={taskPrioritySelectRef}
           id="taskPriority"
           name="taskPriority"
+          defaultValue={initialValues.priority}
         >
           <option value="high">Alta</option>
           <option value="low">Baixa</option>
