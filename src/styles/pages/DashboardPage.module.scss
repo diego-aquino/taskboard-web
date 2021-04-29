@@ -17,6 +17,30 @@
   main {
     height: calc(100vh - 5.6rem);
     max-height: 712px;
+    min-height: 520px;
+  }
+
+  @media (max-width: 760px) {
+    padding: 2rem;
+
+    aside,
+    main {
+      height: calc(100vh - 4rem);
+    }
+  }
+
+  @media (max-width: 620px) {
+    grid-template-columns: 1fr;
+
+    aside,
+    main {
+      height: fit-content;
+      max-height: 100%;
+    }
+  }
+
+  @media (max-width: 430px) {
+    padding: 0;
   }
 }
 
@@ -30,23 +54,62 @@
     width: 100%;
     margin-bottom: 4.2rem;
 
-    .userImageContainer {
+    position: relative;
+
+    .firstLine {
       margin-bottom: 2.2rem;
-      width: 6rem;
-      height: 6rem;
-      border-radius: 50%;
-      border: 0.3rem solid $color-light-blue;
 
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: space-between;
 
-      .userImage {
-        width: 4.8rem;
-        height: 4.8rem;
+      .closeSidebarButton {
+        padding: 0.6rem;
+        border: none;
+        border-radius: 10rem;
+
+        display: none;
+
+        color: $color-white;
+        cursor: pointer;
+
+        background-color: rgba($color-white-on-hover, 0.1);
+
+        transition: background-color $transition-duration;
+
+        &:hover {
+          background-color: rgba($color-white-on-hover, 0.15);
+        }
+
+        svg {
+          width: 2.8rem;
+          height: 2.8rem;
+        }
+
+        @media (max-width: 620px) {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+
+      .userImageContainer {
+        width: 6rem;
+        height: 6rem;
         border-radius: 50%;
+        border: 0.3rem solid $color-light-blue;
 
-        background-color: $color-light-blue;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .userImage {
+          width: 4.8rem;
+          height: 4.8rem;
+          border-radius: 50%;
+
+          background-color: $color-light-blue;
+        }
       }
     }
 
@@ -74,6 +137,8 @@
       background-color: transparent;
       transition: background-color $transition-duration;
 
+      white-space: nowrap;
+
       &:hover:not(&:active) {
         color: $color-white-on-hover;
 
@@ -85,13 +150,38 @@
       svg {
         margin-right: 1.2rem;
         width: 1.8rem;
+        min-width: 1.8rem;
         height: 1.8rem;
+        min-height: 1.8rem;
         transition: opacity $transition-duration;
       }
     }
 
     button + button {
       margin-top: 2.2rem;
+    }
+  }
+
+  @media (max-width: 620px) {
+    height: 100vh;
+    min-height: initial;
+    overflow-y: auto;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    background-color: rgba($color-dark-blue, 0.95);
+    backdrop-filter: blur(5px);
+
+    z-index: 9998;
+
+    transform: translate(-120%);
+    transition: transform $transition-duration;
+
+    &.active {
+      padding: 4.8rem;
+      transform: translate(0%);
     }
   }
 }
@@ -109,45 +199,91 @@
 
   .topContents {
     display: flex;
-    align-items: center;
-  }
-
-  .titleAndDescription {
-    h1 {
-      margin-bottom: 1.6rem;
-
-      color: $color-dark-blue;
-      font-size: 3.6rem;
-    }
-
-    p {
-      color: $color-light-blue;
-      font-size: 1.6rem;
-    }
-  }
-
-  .preferences {
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: center;
 
-    .sortingCriteria {
-      display: flex;
-      align-items: center;
+    .titleAndDescription {
+      margin-right: 2.4rem;
 
-      span {
-        margin-right: 0.8rem;
+      .firstLine {
+        margin-bottom: 1.6rem;
 
+        display: flex;
+        align-items: center;
+
+        .openSidebarButton {
+          margin-right: 1.6rem;
+          border: none;
+
+          display: none;
+
+          cursor: pointer;
+          background-color: transparent;
+
+          transition: opacity $transition-duration;
+
+          &:hover {
+            opacity: 0.85;
+          }
+
+          svg {
+            width: 2.4rem;
+            height: 2.4rem;
+          }
+
+          @media (max-width: 620px) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+        }
+
+        h1 {
+          display: inline-block;
+
+          color: $color-dark-blue;
+          font-size: 3.6rem;
+        }
+      }
+
+      p {
         color: $color-light-blue;
-        font-size: 1.4rem;
+        font-size: 1.6rem;
       }
     }
 
-    .sortingOrder {
-      margin-top: 1.2rem;
+    .preferences {
+      flex: 1;
+
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: center;
+
+      .sortingCriteria {
+        display: flex;
+        align-items: center;
+
+        span {
+          margin-right: 0.8rem;
+
+          color: $color-light-blue;
+          font-size: 1.4rem;
+        }
+      }
+
+      .sortingOrder {
+        margin-top: 1.2rem;
+      }
+    }
+
+    @media (max-width: 760px) {
+      flex-direction: column;
+      align-items: flex-end;
+
+      .preferences {
+        margin-top: 2.4rem;
+      }
     }
   }
 
@@ -162,6 +298,28 @@
     row-gap: 1.6rem;
 
     overflow-y: auto;
+
+    @media (max-width: 960px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 730px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
+    @media (max-width: 620px) {
+      overflow-y: initial;
+    }
+  }
+
+  @media (max-width: 620px) {
+    border-radius: 3.2rem;
+  }
+
+  @media (max-width: 430px) {
+    height: 100%;
+    border-radius: 0;
+    padding: 5.4rem 3.2rem;
   }
 }
 

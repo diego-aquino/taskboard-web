@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -8,6 +9,8 @@ import {
   UserProfile,
   PlusIcon,
   LoadingIcon,
+  MenuIcon,
+  ArrowBack,
 } from '~/assets';
 import { SwitchButton } from '~/components/common';
 import { Task, TaskModalForm } from '~/components/dashboardPage';
@@ -36,6 +39,8 @@ const DashboardPage = () => {
     name: '',
     priority: 'high',
   });
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const idOfTaskBeingEditedRef = useRef(null);
 
@@ -160,10 +165,19 @@ const DashboardPage = () => {
         loading={isCreatingTask}
       />
 
-      <aside>
+      <aside className={clsx(isSidebarOpen && styles.active)}>
         <div className={styles.userInfo}>
-          <div className={styles.userImageContainer}>
-            <div className={styles.userImage} />
+          <div className={styles.firstLine}>
+            <div className={styles.userImageContainer}>
+              <div className={styles.userImage} />
+            </div>
+            <button
+              type="button"
+              className={styles.closeSidebarButton}
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <ArrowBack />
+            </button>
           </div>
           <h1>{userFullName}</h1>
         </div>
@@ -186,7 +200,16 @@ const DashboardPage = () => {
       <main>
         <div className={styles.topContents}>
           <div className={styles.titleAndDescription}>
-            <h1>Tarefas</h1>
+            <div className={styles.firstLine}>
+              <button
+                type="button"
+                className={styles.openSidebarButton}
+                onClick={() => setIsSidebarOpen(true)}
+              >
+                <MenuIcon />
+              </button>
+              <h1>Tarefas</h1>
+            </div>
             <p>
               Marque suas tarefas como concluídas, adicione novas tarefas ou
               edite as já existentes.
