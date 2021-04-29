@@ -25,7 +25,14 @@ const DashboardPage = () => {
 
   const { isAuthenticated, isLoading: isLoadingAuth, logoutUser } = useAuth();
   const { accountData } = useAccount();
-  const { tasks, sortTasks, createTask, editTask, removeTask } = useTasks();
+  const {
+    tasks,
+    isLoading: isLoadingTasks,
+    sortTasks,
+    createTask,
+    editTask,
+    removeTask,
+  } = useTasks();
 
   const [isCreatingTask, setIsCreatingTask] = useState(false);
 
@@ -241,20 +248,34 @@ const DashboardPage = () => {
             </div>
           </div>
         </div>
-        <div className={styles.taskList}>
-          {tasksAreSorted &&
-            tasks.map((task) => (
-              <Task
-                key={task.id}
-                id={task.id}
-                name={task.name}
-                priority={task.priority}
-                checked={task.isCompleted}
-                onTaskClick={openTaskEditingForm}
-                onCheck={updateTaskCheckedState}
-              />
-            ))}
-        </div>
+
+        {!isLoadingTasks && (
+          <div
+            className={clsx(
+              styles.taskList,
+              tasks.length === 0 && styles.noTasks,
+            )}
+          >
+            {tasksAreSorted &&
+              tasks.map((task) => (
+                <Task
+                  key={task.id}
+                  id={task.id}
+                  name={task.name}
+                  priority={task.priority}
+                  checked={task.isCompleted}
+                  onTaskClick={openTaskEditingForm}
+                  onCheck={updateTaskCheckedState}
+                />
+              ))}
+
+            {tasks.length === 0 && (
+              <span className={styles.noTasksMessage}>
+                Sem tarefas no momento :)
+              </span>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );
