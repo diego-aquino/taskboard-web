@@ -89,7 +89,7 @@ const DashboardPage = () => {
   );
 
   const logoutAccount = async () => {
-    await logoutUser;
+    await logoutUser();
 
     removeTokenFromLocalStorage(localStorageKeys.REFRESH_TOKEN);
     router.push('/login');
