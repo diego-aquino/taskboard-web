@@ -9,6 +9,8 @@
   align-items: center;
   justify-content: space-between;
 
+  position: relative;
+
   background-color: $color-white;
 
   cursor: default;
@@ -23,13 +25,14 @@
     opacity: 0.6;
   }
 
-  button {
+  .checkMarkButton {
     border: none;
     background-color: transparent;
 
     font-size: 0;
 
     cursor: pointer;
+    z-index: 1;
 
     .checkMark {
       width: 2rem;
@@ -80,5 +83,23 @@
     color: $color-dark-blue;
 
     transition: opacity $transition-duration;
+  }
+
+  .taskClickableArea {
+    width: 100%;
+    height: 100%;
+
+    border: none;
+    border-radius: $border-radius;
+
+    font-size: 0;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    background-color: transparent;
+
+    z-index: 0;
   }
 }
