@@ -24,6 +24,8 @@ const DashboardPage = () => {
   const { accountData } = useAccount();
   const { tasks, sortTasks, createTask, editTask, removeTask } = useTasks();
 
+  const [isCreatingTask, setIsCreatingTask] = useState(false);
+
   const [sortingCriteria, setSortingCriteria] = useState('priority');
   const [sortingOrder, setSortingOrder] = useState('desc');
 
@@ -81,9 +83,13 @@ const DashboardPage = () => {
   }, []);
 
   const handleTaskCreate = useCallback(
-    (taskData) => {
+    async (taskData) => {
+      setIsCreatingTask(true);
+
+      await createTask(taskData, { sortingCriteria, sortingOrder });
+
+      setIsCreatingTask(false);
       setTaskModalFormStatus('closed');
-      createTask(taskData, { sortingCriteria, sortingOrder });
     },
     [createTask, sortingCriteria, sortingOrder],
   );
@@ -151,6 +157,7 @@ const DashboardPage = () => {
         onEditTask={handleTaskEdit}
         onRemoveTask={handleTaskRemove}
         onClose={() => setTaskModalFormStatus('closed')}
+        loading={isCreatingTask}
       />
 
       <aside>

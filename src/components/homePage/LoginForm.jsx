@@ -10,7 +10,7 @@ import { Input, Button, Alert } from '~/components/common';
 import styles from '~/styles/components/homePage/LoginForm.module.scss';
 import * as validate from '~/utils/validation';
 
-const LoginForm = ({ onValidSubmit }, ref) => {
+const LoginForm = ({ onValidSubmit, loading: isLoading }, ref) => {
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
 
@@ -82,7 +82,9 @@ const LoginForm = ({ onValidSubmit }, ref) => {
         />
       )}
 
-      <Button type="submit">Login</Button>
+      <Button type="submit" loading={isLoading}>
+        Login
+      </Button>
     </form>
   );
 };

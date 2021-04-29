@@ -6,6 +6,12 @@
   border: none;
   border-radius: $border-radius;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
   color: $color-white;
   font-weight: 500;
 
@@ -14,7 +20,50 @@
   background-color: $color-bright-blue;
   transition: background-color $transition-duration;
 
-  &:hover:not(&:active) {
+  &:hover:not(&:active):not(&:disabled) {
     background-color: $color-bright-blue-on-hover;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: rgba($color-bright-blue, 0.9);
+  }
+
+  &.loading {
+    .childrenContainer {
+      visibility: hidden;
+    }
+
+    svg {
+      width: auto;
+      height: 45%;
+
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      color: $color-white;
+
+      animation: rotate 0.75s infinite linear, fadeIn $transition-duration;
+    }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
