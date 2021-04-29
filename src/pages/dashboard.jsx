@@ -9,8 +9,8 @@ import {
   PlusIcon,
   LoadingIcon,
 } from '~/assets';
-import { SwitchButton } from '~/components/common';
-import { Task } from '~/components/dashboardPage';
+import { Modal, SwitchButton } from '~/components/common';
+import { Task, TaskForm } from '~/components/dashboardPage';
 import { useAccount } from '~/contexts/AccountContext';
 import { useAuth } from '~/contexts/AuthContext';
 import useTasks from '~/hooks/useTasks';
@@ -21,30 +21,19 @@ const DashboardPage = () => {
 
   const { isAuthenticated, isLoading: isLoadingAuth } = useAuth();
   const { accountData } = useAccount();
-  const { tasks, sortByPriority, sortByName } = useTasks();
+  const { tasks, sortTasks, createTask } = useTasks();
 
   const [sortingCriteria, setSortingCriteria] = useState('priority');
   const [sortingOrder, setSortingOrder] = useState('desc');
 
   const [tasksAreSorted, setTasksAreSorted] = useState(false);
 
+  const [taskFormIsActive, setTaskFormIsOpen] = useState(false);
+
   const userFullName = useMemo(() => {
     if (!accountData) return '';
     return `${accountData.firstName} ${accountData.lastName}`;
   }, [accountData]);
-
-  const sortTasks = useCallback(
-    (criteria, order) => {
-      const ascending = order === 'asc';
-
-      if (criteria === 'priority') {
-        sortByPriority(ascending);
-      } else {
-        sortByName(ascending);
-      }
-    },
-    [sortByName, sortByPriority],
-  );
 
   useEffect(() => {
     if (tasks.length === 0 || tasksAreSorted) return;
@@ -71,6 +60,14 @@ const DashboardPage = () => {
     [sortTasks, sortingCriteria, sortingOrder],
   );
 
+  const handleTaskCreation = useCallback(
+    (taskData) => {
+      setTaskFormIsOpen(false);
+      createTask(taskData, { sortingCriteria, sortingOrder });
+    },
+    [createTask, sortingCriteria, sortingOrder],
+  );
+
   useEffect(() => {
     const shouldRedirect = !isLoadingAuth && !isAuthenticated;
     if (shouldRedirect) {
@@ -92,6 +89,13 @@ const DashboardPage = () => {
         <title>Dashboard | Tarefas</title>
       </Head>
 
+      <Modal active={taskFormIsActive} onClose={() => setTaskFormIsOpen(false)}>
+        <TaskForm
+          onValidSubmit={handleTaskCreation}
+          submitButtonText="Criar tarefa"
+        />
+      </Modal>
+
       <aside>
         <div className={styles.userInfo}>
           <div className={styles.userImageContainer}>
@@ -100,7 +104,7 @@ const DashboardPage = () => {
           <h1>{userFullName}</h1>
         </div>
         <div className={styles.sidebarMenu}>
-          <button type="button">
+          <button type="button" onClick={() => setTaskFormIsOpen(true)}>
             <PlusIcon /> Nova Tarefa
           </button>
           <button type="button">

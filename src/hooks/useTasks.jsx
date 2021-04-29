@@ -19,8 +19,11 @@ function sortTasksByName(tasks, ascending) {
   const sortingFactor = ascending ? 1 : -1;
 
   return tasks.sort((task, taskToCompare) => {
-    if (task.name > taskToCompare.name) return 1 * sortingFactor;
-    if (task.name < taskToCompare.name) return -1 * sortingFactor;
+    const taskName = task.name.toLowerCase();
+    const taskToCompareName = taskToCompare.name.toLowerCase();
+
+    if (taskName > taskToCompareName) return 1 * sortingFactor;
+    if (taskName < taskToCompareName) return -1 * sortingFactor;
     return 0;
   });
 }
@@ -49,7 +52,62 @@ function useTasks() {
     setTasks((currentTasks) => sortTasksByName(currentTasks, ascending));
   }, []);
 
-  return { tasks, sortByPriority, sortByName };
+  const sortTasks = useCallback(
+    (criteria, order) => {
+      const ascending = order === 'asc';
+
+      if (criteria === 'priority') {
+        sortByPriority(ascending);
+      } else {
+        sortByName(ascending);
+      }
+    },
+    [sortByName, sortByPriority],
+  );
+
+  const insertTaskSortedByPriority = useCallback(
+    (newTask, ascending = true) => {
+      setTasks((currentTasks) =>
+        sortTasksByPriority([...currentTasks, newTask], ascending),
+      );
+    },
+    [],
+  );
+
+  const insertTaskSortedByName = useCallback((newTask, ascending = true) => {
+    setTasks((currentTasks) =>
+      sortTasksByName([...currentTasks, newTask], ascending),
+    );
+  }, []);
+
+  const insertSortedTask = useCallback(
+    (newTask, criteria, order) => {
+      const ascending = order === 'asc';
+
+      if (criteria === 'priority') {
+        insertTaskSortedByPriority(newTask, ascending);
+      } else {
+        insertTaskSortedByName(newTask, ascending);
+      }
+    },
+    [insertTaskSortedByName, insertTaskSortedByPriority],
+  );
+
+  const createTask = useCallback(
+    ({ name, priority }, { sortingCriteria, sortingOrder }) => {
+      if (!isAuthenticated) return;
+
+      (async () => {
+        const createdTask = await makeAuthenticatedRequest((accessToken) =>
+          tasksServices.create(accessToken, { name, priority }),
+        );
+        insertSortedTask(createdTask, sortingCriteria, sortingOrder);
+      })();
+    },
+    [isAuthenticated, makeAuthenticatedRequest, insertSortedTask],
+  );
+
+  return { tasks, sortTasks, createTask };
 }
 
 export default useTasks;

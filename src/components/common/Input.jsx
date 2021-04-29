@@ -6,7 +6,16 @@ import styles from '~/styles/components/common/Input.module.scss';
 import Alert from './Alert';
 
 const Input = (
-  { label, name, validate, className, onChange, onBlur, ...rest },
+  {
+    label,
+    name,
+    validate,
+    variant = 'normal',
+    className,
+    onChange,
+    onBlur,
+    ...rest
+  },
   ref,
 ) => {
   const [value, setValue] = useState('');
@@ -36,6 +45,7 @@ const Input = (
       validate: () => executeValidation(value),
       setCustomAlertMessage: (customAlertMessage) =>
         setAlertMessage(customAlertMessage),
+      clear: () => setValue(''),
     }),
     [value, alertMessage, executeValidation],
   );
@@ -60,11 +70,12 @@ const Input = (
     <div
       className={clsx(
         styles.container,
+        styles[variant],
         alertMessage && styles.withAlert,
         className,
       )}
     >
-      <label htmlFor={name}>{label}</label>
+      {label && <label htmlFor={name}>{label}</label>}
       <input
         id={name}
         name={name}
