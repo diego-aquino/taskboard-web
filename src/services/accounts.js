@@ -15,9 +15,10 @@ export async function login(accountData) {
 }
 
 export async function logout(accessToken) {
-  await api.post('/accounts/logout', 
+  await api.post(
+    '/accounts/logout',
     {},
-    { headers: { Authorization: `Bearer ${accessToken}` }},
+    { headers: { Authorization: `Bearer ${accessToken}` } },
   );
 }
 
