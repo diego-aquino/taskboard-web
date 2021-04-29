@@ -18,3 +18,9 @@ export async function list(accessToken) {
 
   return tasks;
 }
+
+export async function edit(accessToken, taskId, newTaskData) {
+  await api.put(`/tasks/${taskId}`, newTaskData, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+}
