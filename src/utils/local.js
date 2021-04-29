@@ -16,3 +16,8 @@ export function readFromLocalStorage(key) {
   if (!localStorageIsAvailable) return null;
   return window.localStorage.getItem(key);
 }
+
+export function removeTokenFromLocalStorage(key) {
+  if (!localStorageIsAvailable) return;
+  window.localStorage.removeItem(key);
+}

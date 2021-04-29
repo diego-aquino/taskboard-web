@@ -14,6 +14,13 @@ export async function login(accountData) {
   return loginData;
 }
 
+export async function logout(accessToken) {
+  await api.post('/accounts/logout', 
+    {},
+    { headers: { Authorization: `Bearer ${accessToken}` }},
+  );
+}
+
 export async function token(refreshToken) {
   const tokenResponse = await api.post('/accounts/token', { refreshToken });
   const { accessToken } = tokenResponse.data;
