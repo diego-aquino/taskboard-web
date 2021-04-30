@@ -28,6 +28,11 @@
 
 ## :computer: Primeiros passos
 
+### Acessando a aplicação
+A aplicação está disponível no link a seguir:
+<a href="taskboardapp.vercel.app">taskboardapp.vercel.app</a>
+---
+
 Para clonar e executar esta aplicação, é preciso ter [Git](https://git-scm.com), [Node.js](https://nodejs.org/en) e [Yarn](https://yarnpkg.com) instalados. Depois, da sua linha de comando:
 
 ```bash
@@ -70,7 +75,8 @@ Este projeto está sob a licença GLPv3. Para mais informações, acesse [LICENS
     src="https://img.shields.io/static/v1?label=&message=GitHub&color=24292e&style=flat-square&logo=github"
     align="center"
   />
-</a>
+</a><br />
+
 - Murilo Castro
 <a href="https://www.linkedin.com/in/murilo-castro-a61a9019b/">
   <img
@@ -85,7 +91,8 @@ Este projeto está sob a licença GLPv3. Para mais informações, acesse [LICENS
     src="https://img.shields.io/static/v1?label=&message=GitHub&color=24292e&style=flat-square&logo=github"
     align="center"
   />
-</a>
+</a><br />
+
 - Vinícius Lins
 <a href="https://www.linkedin.com/in/vin%C3%ADcius-amaral-759b76205/">
   <img
