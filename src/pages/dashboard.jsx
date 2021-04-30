@@ -4,9 +4,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
-  InfoIcon,
   LogoutIcon,
-  UserProfile,
   PlusIcon,
   LoadingIcon,
   MenuIcon,
@@ -191,12 +189,6 @@ const DashboardPage = () => {
         <div className={styles.sidebarMenu}>
           <button type="button" onClick={openTaskCreationForm}>
             <PlusIcon /> Nova Tarefa
-          </button>
-          <button type="button">
-            <UserProfile /> Perfil
-          </button>
-          <button type="button">
-            <InfoIcon /> Sobre
           </button>
           <button type="button" onClick={logoutAccount}>
             <LogoutIcon /> Logout
