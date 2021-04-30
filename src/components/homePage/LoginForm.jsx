@@ -24,7 +24,7 @@ const LoginForm = ({ onValidSubmit, loading: isLoading }, ref) => {
     setCustomAlertMessage,
   ]);
 
-  const fieldsAreValid = useCallback(async () => {
+  const allFieldsAreValid = useCallback(async () => {
     const inputRefs = [emailInputRef, passwordInputRef];
 
     const validationResults = await Promise.all(
@@ -42,7 +42,8 @@ const LoginForm = ({ onValidSubmit, loading: isLoading }, ref) => {
     async (event) => {
       event.preventDefault();
 
-      if (!fieldsAreValid()) return;
+      const isValidSubmit = await allFieldsAreValid();
+      if (!isValidSubmit) return;
 
       const [email, password] = [emailInputRef, passwordInputRef].map(
         (inputRef) => inputRef.current?.value,
@@ -50,7 +51,7 @@ const LoginForm = ({ onValidSubmit, loading: isLoading }, ref) => {
 
       onValidSubmit?.({ email, password });
     },
-    [fieldsAreValid, onValidSubmit],
+    [allFieldsAreValid, onValidSubmit],
   );
 
   return (

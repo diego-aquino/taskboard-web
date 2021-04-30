@@ -70,7 +70,8 @@ const SignUpForm = ({ onValidSubmit, loading: isLoading }, ref) => {
     async (event) => {
       event.preventDefault();
 
-      if (!allFieldsAreValid()) return;
+      const isValidSubmit = await allFieldsAreValid();
+      if (!isValidSubmit) return;
 
       const [firstName, lastName, email, password] = [
         firstNameInputRef,
@@ -84,11 +85,6 @@ const SignUpForm = ({ onValidSubmit, loading: isLoading }, ref) => {
     [allFieldsAreValid, onValidSubmit],
   );
 
-  const preventSubmitByPressingEnter = useCallback((event) => {
-    if (event.key !== 'Enter') return;
-    event.preventDefault();
-  }, []);
-
   return (
     <form className={styles.container} onSubmit={handleSubmit}>
       <div className={styles.twoColumnInputContainer}>
@@ -98,7 +94,6 @@ const SignUpForm = ({ onValidSubmit, loading: isLoading }, ref) => {
           name="firstName"
           label="Nome"
           validate={validate.requiredTextField}
-          onKeyDown={preventSubmitByPressingEnter}
           required
         />
         <Input
@@ -107,7 +102,6 @@ const SignUpForm = ({ onValidSubmit, loading: isLoading }, ref) => {
           name="lastName"
           label="Sobrenome"
           validate={validate.requiredTextField}
-          onKeyDown={preventSubmitByPressingEnter}
           required
         />
       </div>
@@ -118,7 +112,6 @@ const SignUpForm = ({ onValidSubmit, loading: isLoading }, ref) => {
         label="Email"
         placeholder="nome@dominio.com"
         validate={validate.requiredEmailField}
-        onKeyDown={preventSubmitByPressingEnter}
         required
       />
       <div className={styles.twoColumnInputContainer}>
@@ -130,7 +123,6 @@ const SignUpForm = ({ onValidSubmit, loading: isLoading }, ref) => {
           placeholder="********"
           minLength={8}
           validate={validatePassword}
-          onKeyDown={preventSubmitByPressingEnter}
           required
         />
         <Input
@@ -141,7 +133,6 @@ const SignUpForm = ({ onValidSubmit, loading: isLoading }, ref) => {
           placeholder="********"
           minLength={8}
           validate={validateConfirmedPassword}
-          onKeyDown={preventSubmitByPressingEnter}
           required
         />
       </div>
