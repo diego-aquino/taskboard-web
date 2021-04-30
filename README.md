@@ -29,7 +29,8 @@
 ## :computer: Primeiros passos
 
 ### Acessando a aplicação
-A aplicação está disponível no link a seguir:
+
+<p> A aplicação está disponível no link a seguir: </p>
 <a href="taskboardapp.vercel.app">taskboardapp.vercel.app</a>
 ---
 
@@ -61,50 +62,53 @@ Este projeto está sob a licença GLPv3. Para mais informações, acesse [LICENS
 
 ---
 ## Devs
-- Diego Aquino
-<a href="http://linkedin.com/in/diego-aquino">
-  <img
-    alt="LinkedIn"
-    src="https://img.shields.io/static/v1?label=&message=LinkedIn&color=2867B2&style=flat-square&logo=linkedin"
-    align="center"
-  />
-</a>
-<a href="https://github.com/diego-aquino">
-  <img
-    alt="GitHub"
-    src="https://img.shields.io/static/v1?label=&message=GitHub&color=24292e&style=flat-square&logo=github"
-    align="center"
-  />
-</a><br />
+- <p>Diego Aquino
+    <a href="http://linkedin.com/in/diego-aquino">
+      <img
+        alt="LinkedIn"
+        src="https://img.shields.io/static/v1?label=&message=LinkedIn&color=2867B2&style=flat-square&logo=linkedin"
+        align="center"
+      />
+    </a>
+    <a href="https://github.com/diego-aquino">
+      <img
+        alt="GitHub"
+        src="https://img.shields.io/static/v1?label=&message=GitHub&color=24292e&style=flat-square&logo=github"
+        align="center"
+      />
+    </a>
+  </p>
 
-- Murilo Castro
-<a href="https://www.linkedin.com/in/murilo-castro-a61a9019b/">
-  <img
-    alt="LinkedIn"
-    src="https://img.shields.io/static/v1?label=&message=LinkedIn&color=2867B2&style=flat-square&logo=linkedin"
-    align="center"
-  />
-</a>
-<a href="https://github.com/Murilo-Gruppi">
-  <img
-    alt="GitHub"
-    src="https://img.shields.io/static/v1?label=&message=GitHub&color=24292e&style=flat-square&logo=github"
-    align="center"
-  />
-</a><br />
-
-- Vinícius Lins
-<a href="https://www.linkedin.com/in/vin%C3%ADcius-amaral-759b76205/">
-  <img
-    alt="LinkedIn"
-    src="https://img.shields.io/static/v1?label=&message=LinkedIn&color=2867B2&style=flat-square&logo=linkedin"
-    align="center"
-  />
-</a>
-<a href="https://github.com/viniciuslins256">
-  <img
-    alt="GitHub"
-    src="https://img.shields.io/static/v1?label=&message=GitHub&color=24292e&style=flat-square&logo=github"
-    align="center"
-  />
-</a>
+- <p>Murilo Castro
+    <a href="https://www.linkedin.com/in/murilo-castro-a61a9019b/">
+      <img
+        alt="LinkedIn"
+        src="https://img.shields.io/static/v1?label=&message=LinkedIn&color=2867B2&style=flat-square&logo=linkedin"
+        align="center"
+      />
+    </a>
+    <a href="https://github.com/Murilo-Gruppi">
+      <img
+        alt="GitHub"
+        src="https://img.shields.io/static/v1?label=&message=GitHub&color=24292e&style=flat-square&logo=github"
+        align="center"
+      />
+    </a>
+  </p>
+  
+- <p>Vinícius Lins
+    <a href="https://www.linkedin.com/in/vin%C3%ADcius-amaral-759b76205/">
+      <img
+        alt="LinkedIn"
+        src="https://img.shields.io/static/v1?label=&message=LinkedIn&color=2867B2&style=flat-square&logo=linkedin"
+        align="center"
+      />
+    </a>
+    <a href="https://github.com/viniciuslins256">
+      <img
+        alt="GitHub"
+        src="https://img.shields.io/static/v1?label=&message=GitHub&color=24292e&style=flat-square&logo=github"
+        align="center"
+      />
+    </a>
+  </p>
