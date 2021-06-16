@@ -14,6 +14,8 @@
     <a href="#technologist-devs">Devs</a>
 </p>
 
+https://user-images.githubusercontent.com/58959382/122308661-2cd53380-cee3-11eb-9dd2-7e6884887328.mp4
+
 ## :rocket: Features
 
 - Registro de contas, login e logout do usuário na plataforma
@@ -112,5 +114,3 @@ Este projeto está sob a licença GLPv3. Para mais informações, acesse [LICENS
       />
     </a>
   </p>
-
----
